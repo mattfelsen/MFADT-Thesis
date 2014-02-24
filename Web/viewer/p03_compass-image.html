@@ -1,0 +1,66 @@
+<!doctype html>
+
+<html lang="en"> 
+<head>
+  <script src="js/processing-1.4.1.min.js"></script>
+  <style type="text/css">body { margin: 0; padding: 0; }</style>
+</head>
+
+<body>
+
+<!-- JavaScript Setup -->
+<script type="text/javascript">
+var compassHeading, deviceTilt;
+window.addEventListener('deviceorientation', function(data) {
+    compassHeading = data.alpha;
+    deviceTilt = data.gamma - 45;
+    // document.getElementById("heading").innerHTML = Math.round(compassHeading);
+}, false);
+</script>
+
+
+<!-- Processing Code -->
+<script type="application/processing">
+/* @pjs preload="img/penn.jpg"; */
+PImage photo;
+
+float overscale = 0.5;
+float imageNewWidth;
+float imageNewHeight;
+
+void setup() {
+  size(window.innerWidth, window.innerHeight);
+  imageMode(CENTER);
+  
+  photo = loadImage("img/penn.jpg");
+
+  imageNewWidth = width * (1 + overscale);
+  imageNewHeight = height * (1 + overscale);
+  
+  photo.resize((int) imageNewWidth, (int) imageNewHeight); 
+}
+
+void draw() {
+  background(255);
+
+  pushMatrix();
+  {
+
+    int translateX = map(compassHeading, 0, 360, -imageNewWidth/imageNewWidth, imageNewWidth/2);
+    int translateY = height / 2 - (imageNewHeight / 2);
+
+    translate(width/2, height/2);
+    translate(translateX, translateY);
+    translate(0, deviceTilt * 4);
+    
+    image(photo, 0, 0);
+  }
+  popMatrix();
+}
+
+</script>
+
+<canvas></canvas>
+</body>
+
+</html>

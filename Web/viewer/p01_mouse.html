@@ -1,0 +1,65 @@
+<!doctype html>
+
+<html lang="en"> 
+<head>
+  <script src="js/processing-1.4.1.min.js"></script>
+  <style type="text/css">body { margin: 0; padding: 0; }</style>
+</head>
+
+<body>
+
+<!-- JavaScript Setup -->
+<script type="text/javascript">
+var compassHeading;
+window.addEventListener('deviceorientation', function(data) {
+    compassHeading = Math.round(data.alpha);
+    // document.getElementById("heading").innerHTML = Math.round(compassHeading);
+}, false);
+</script>
+
+
+<!-- Processing Code -->
+<script type="application/processing">
+
+/* @pjs preload="img/penn_station_construction.jpg"; */
+PImage photo;
+
+float overscale = 1;
+
+void setup() {
+  size(window.innerWidth, window.innerHeight);
+  imageMode(CENTER);
+  
+  photo = loadImage("img/penn_station_construction.jpg");
+  
+  float imageNewWidth = width * (1 + overscale);
+  float imageNewHeight = height * (1 + overscale);
+  
+  photo.resize((int) imageNewWidth, (int) imageNewHeight); 
+}
+
+void draw() {
+  background(127);
+
+  pushMatrix();
+  {
+    translate(-mouseX+width/2, -mouseY+height/2);
+
+    image(photo, width/2, height/2);
+    //image(photo, 0, 0); //, 2000, 1593);
+  }
+  popMatrix();
+}
+
+boolean sketchFullScreen() {
+  return true;
+}
+
+
+
+</script>
+
+<canvas></canvas>
+</body>
+
+</html>

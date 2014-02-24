@@ -1,0 +1,98 @@
+<!doctype html>
+
+<html lang="en"> 
+<head>
+  <script src="js/jquery-1.7.min.js"></script>
+  <script src="js/processing-1.4.1.min.js"></script>
+  <script type="text/javascript" src="js/sb-1.3.0.js"></script>
+  <style type="text/css">body { margin: 0; padding: 0; }</style>
+</head>
+
+<body>
+
+<!-- JavaScript Setup -->
+<script type="text/javascript">
+var compassHeading, deviceTilt;
+var sb;
+
+$(window).on("load", function() {
+
+  var p5;
+
+  sb = new Spacebrew.Client(window.location.hostname);
+  sb.name("Tower View Tablet");
+  sb.description("String sending prototype for changing images");
+
+  sb.addSubscribe("filename", "string");
+  sb.onStringMessage = onStringMessage;
+  sb.connect();
+
+  function onStringMessage(name, value) {
+    if (name == "filename") {
+      if (!p5) {
+        p5 = Processing.getInstanceById("viewer");
+      }
+      console.log("JS calling loadViewerImage() with "+value);
+      p5.loadViewerImage(value);
+    }        
+  }
+
+  window.addEventListener('deviceorientation', function(data) {
+    compassHeading = data.alpha;
+    deviceTilt = data.gamma - 45;
+  }, false);
+
+
+});
+</script>
+
+
+<!-- Processing Code -->
+<script type="application/processing">
+/* @pjs preload="img/penn.jpg,img/armory.jpg"; */
+PImage photo;
+
+float overscale = 1;
+float imageNewWidth;
+float imageNewHeight;
+
+void setup() {
+  size(window.innerWidth, window.innerHeight);
+  imageMode(CENTER);
+  
+  loadViewerImage("penn.jpg");
+}
+
+void loadViewerImage(String filename) {
+  photo = loadImage("img/"+filename);
+
+  imageNewWidth = window.innerWidth * (1 + overscale);
+  imageNewHeight = window.innerHeight * (1 + overscale);
+
+  photo.resize((int) imageNewWidth, imageNewHeight);
+}
+
+void draw() {
+  background(255);
+
+  pushMatrix();
+  {
+
+    int translateX = map(compassHeading, 0, 360, -imageNewWidth/2, imageNewWidth/2);
+    int translateY = height / 2 - (imageNewHeight / 2);
+
+    translate(width/2, height/2);
+    translate(translateX * 1.5, translateY);
+    translate(0, deviceTilt * 6);
+    
+    image(photo, 0, 0);
+  }
+  popMatrix();
+}
+
+</script>
+
+<canvas id="viewer"></canvas>
+</body>
+
+</html>
