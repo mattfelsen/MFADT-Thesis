@@ -16,3 +16,25 @@ Icon
 # Files that might appear on external disk
 .Spotlight-V100
 .Trashes
+
+
+#
+# node stuff
+#
+lib-cov
+lcov.info
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+
+pids
+logs
+results
+build
+.grunt
+
+node_modules
