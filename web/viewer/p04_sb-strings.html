@@ -24,6 +24,8 @@ $(window).on("load", function() {
   sb.description("String sending prototype for changing images");
 
   sb.addSubscribe("filename", "string");
+  sb.addSubscribe("reload", "boolean");
+  sb.onBooleanMessage = onBooleanMessage;
   sb.onStringMessage = onStringMessage;
   sb.connect();
 
@@ -34,6 +36,14 @@ $(window).on("load", function() {
       }
       console.log("JS calling loadViewerImage() with "+value);
       p5.loadViewerImage(value);
+    }        
+  }
+
+  function onBooleanMessage(name, value) {
+    if (name == "reload") {
+      if (value == true) {
+        location.reload();
+      }
     }        
   }
 
