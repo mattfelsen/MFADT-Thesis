@@ -4,7 +4,7 @@ var gpio = require('onoff').Gpio;
 // load Spacebrew
 var Spacebrew = require("spacebrew");
 
-var sb_server = "localhost";
+var sb_server = "mattfelsen.local";
 var sb_name = "Tower View Lever";
 var sb_description = "Sends boolean event when the tower viewer lever is pressed";
 var sb = new Spacebrew.Client(sb_server, sb_name, sb_description);
@@ -23,8 +23,8 @@ var readPin = function() {
 	state = button.readSync();
 
 	if (state != lastState) {
-		console.log('Button is now', state);
-		sb.send("lever", "boolean", state);
+		console.log('Button is now', state ? "true" : "false");
+		sb.send("lever", "boolean", state ? "true" : "false");
 		led.writeSync(state);
 	}
 
