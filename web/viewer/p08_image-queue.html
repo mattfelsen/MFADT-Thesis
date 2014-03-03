@@ -1,0 +1,185 @@
+<!doctype html>
+
+<html lang="en"> 
+<head>
+  <script src="js/jquery-1.7.min.js"></script>
+  <script src="js/processing-1.4.1.min.js"></script>
+  <script type="text/javascript" src="js/sb-1.3.0.js"></script>
+  <style type="text/css">
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+    }
+    img#viewer {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    div#info {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: black;
+      color: white;
+      font-size: 24px;
+    }
+  </style>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=1024, height=748, user-scalable=no, minimum-scale=1, maximum-scale=1">
+</head>
+
+<body>
+
+<!-- JavaScript Setup -->
+<script type="text/javascript">
+
+var pan, tilt;
+var sb;
+
+var imgScale = 2;
+var showImage = false;
+
+var imageQueue = [
+  "penn-street.jpg",
+  "penn-construction.jpg",
+  "penn-int1.jpg",
+  "penn-int2.jpg",
+  "penn-int3.jpg",
+];
+var imageQueueIndex = 0;
+
+$(window).on("load", function() {
+
+// setup
+var img = $("img#viewer");
+loadViewerImage(imageQueue[imageQueueIndex]);
+
+if (!showImage) {
+  img.hide();
+}
+
+
+function loadViewerImage(filename) {
+  img.attr("src", "img/"+filename);
+  
+  img.css("width", (window.innerWidth * imgScale)+"px");
+  img.css("height", (window.innerHeight * imgScale)+"px");
+  // $("#info").html("window size: "+window.innerWidth+"px,"+window.innerHeight+"px\nimage size: "+img.width()+"px,"+img.height()+"px");
+}
+
+
+
+sb = new Spacebrew.Client(window.location.hostname);
+sb.name("Tower View Tablet");
+sb.description("String sending prototype for changing images");
+
+sb.addSubscribe("filename", "string");
+sb.addSubscribe("reload", "boolean");
+sb.addSubscribe("transition", "boolean");
+sb.onBooleanMessage = onBooleanMessage;
+sb.onStringMessage = onStringMessage;
+sb.connect();
+
+function onStringMessage(name, value) {
+  console.log("String", name, value);
+  if (name == "filename") {
+    console.log("JS calling loadViewerImage() with "+value);
+    loadViewerImage(value);
+  }        
+}
+
+function onBooleanMessage(name, value) {
+  console.log("Boolean", name, value);
+  if (name == "reload") {
+    if (value == true) {
+      location.reload();
+    }
+  }
+  if (name == "transition") {
+    if (value == true) {
+
+      if (!showImage) {
+        // If showImage is false, then we're currently at black
+        // So we should set the flag to true and fade the image in
+        // We're assuming the correct image is already loaded, which happens
+        // at page load time and after the last image in the queue fades out
+        console.log("showImage is false. setting to true and fading in");
+        showImage = true;
+        img.fadeIn(2000, 'linear');
+      } else {
+        console.log("showImage is true");
+
+        // If showImage is true, then let's either check if we're currently
+        // showing the last image, and either fade to black if so (and reset the
+        // image to the first in the queue), or just load the next image in
+        // the queue otherwise
+        if (imageQueueIndex != imageQueue.length - 1) {
+          console.log("index not equal to last element")
+          imageQueueIndex++;
+          loadViewerImage(imageQueue[imageQueueIndex]);
+        } else {
+          console.log("index IS equal to last element")
+          showImage = false;
+          img.fadeOut(2000, 'linear', function() {
+            imageQueueIndex = 0;
+            loadViewerImage(imageQueue[imageQueueIndex]);
+          });
+        }
+      }
+    }
+  }
+}
+
+window.addEventListener('deviceorientation', function(data) {
+  // working ranges:
+  // pan: 90-270 -> 0-180
+  // tilt: 50-100
+  pan = data.alpha;
+  tilt = data.gamma * -1;
+
+  var panPct = map(pan, 270, 90, 0, 1);
+  var panPx = (img.width() / 2) - (panPct * img.width());
+
+  var tiltPct = map(tilt, 70, 120, 0, 1);
+  var tiltPx = (img.height() / 2) - (tiltPct * img.height());
+
+  // set translation to center of the image
+  var translateX = img.width() / 4;
+  var translateY = img.height() / 4;
+
+  translateX += -panPx;
+  translateY += tiltPx;
+
+  img.css("-webkit-transform", "translate(-"+translateX+"px, -"+translateY+"px)");
+
+  //$("#info").html("pan: "+pan+"\ntilt: "+tilt+"\npan percent: "+panPct+"\npan pixels: "+panPx);
+
+  // img.css("left", compassHeading*3);
+  // img.css("top", deviceTilt*6);
+
+  // img.css("-webkit-transform", "translate("+compassHeading+"px, "+deviceTilt*3+"px)");
+
+  // var translateX = map(compassHeading, 0, 360, -imageNewWidth/2, imageNewWidth/2);
+  // var translateY = height / 2 - (imageNewHeight / 2);
+
+  // translate(width/2, height/2);
+  // translate(translateX * 1.5, translateY);
+  // translate(0, deviceTilt * 6);
+}, false);
+
+
+var map = function(value, inputMin, inputMax, outputMin, outputMax) {
+  return outVal = ((value - inputMin) / (inputMax - inputMin) * (outputMax - outputMin) + outputMin);
+}
+
+});
+</script>
+
+<img id="viewer" />
+<div id="info"></div>
+
+</body>
+
+</html>
