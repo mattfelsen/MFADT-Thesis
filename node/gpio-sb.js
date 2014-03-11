@@ -24,7 +24,8 @@ var readPin = function() {
 
 	if (state != lastState) {
 		console.log('Button is now', state ? "true" : "false");
-		sb.send("lever", "boolean", state ? "true" : "false");
+		if (sb._isConnected)
+			sb.send("lever", "boolean", state ? "true" : "false");
 		led.writeSync(state);
 	}
 
