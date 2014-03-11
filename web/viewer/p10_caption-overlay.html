@@ -1,0 +1,249 @@
+<!doctype html>
+
+<html lang="en"> 
+<head>
+  <link href="http://fonts.googleapis.com/css?family=Sorts+Mill+Goudy:400italic|Fanwood+Text:400italic" rel="stylesheet" type="text/css">
+  <script src="js/jquery-1.7.min.js"></script>
+  <script src="js/processing-1.4.1.min.js"></script>
+  <script type="text/javascript" src="js/sb-1.3.0.js"></script>
+  <style type="text/css">
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: black;
+    }
+    img#viewer {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    div#info {
+        top: 0;
+        left: 0;
+        height: 100%;
+        text-align: center;
+        position: absolute;
+        padding: 0 150px 0 150px;
+
+        background-color: rgba(255, 255, 255, 0.45);
+        color: black;
+
+        font-size: 42px;
+        line-height: 1.3em;
+
+        font-family: "Sorts Mill Goudy", serif;
+        font-style: italic;
+        /*font-family: "Fanwood Text", serif;*/
+    }
+    p#caption {
+        position: relative;
+        top: 50%;
+        -webkit-transform: translateY(-45%);
+        margin: 0;
+    }
+  </style>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=1024, height=748, user-scalable=no, minimum-scale=1, maximum-scale=1">
+</head>
+
+<body>
+
+<!-- JavaScript Setup -->
+<script type="text/javascript">
+
+var pan, tilt;
+var sb;
+
+var imgScale = 2;
+var showImage = false;
+var overlayPresent = false;
+
+var imageQueue = [
+    {
+        image: "penn-street.jpg",
+        caption: "Pennsylvation Station originally stood on 8th Avenue between 32nd and 34th streets."
+    },
+    {
+        image: "penn-construction.jpg",
+        caption: "Construction involved razing the entire area, including approximately 500 buildings in an area once known as the Tenderloin."
+    },
+    {
+        image: "penn-int1.jpg",
+        caption: "The main waiting hall was a cavernous space, with soaring ceilings rising over 100 feet and natural light flooding in from skylights above."
+    },
+    {
+        image: "penn-int2.jpg",
+        caption: "The original platforms still exist underneath present-day Madison Square Garden, though the space has been altered beyong recognition."
+    },
+    // {
+    //     image: "penn-int3.jpg",
+    //     caption: ""
+    // }
+];
+var imageQueueIndex = 0;
+
+$(window).on("load", function() {
+
+$("div#info").css("height", window.innerHeight);
+
+// setup
+var img = $("img#viewer");
+loadViewerImage(imageQueue[imageQueueIndex]);
+
+if (!showImage) {
+  img.hide();
+}
+
+
+function loadViewerImage(obj) {
+  img.attr("src", "img/"+obj.image);
+  
+  img.css("width", (window.innerWidth * imgScale)+"px");
+  img.css("height", (window.innerHeight * imgScale)+"px");
+
+  $("#caption").text(obj.caption);
+
+  // $("#info").html("window size: "+window.innerWidth+"px,"+window.innerHeight+"px\nimage size: "+img.width()+"px,"+img.height()+"px");
+}
+    
+function transition(value) {
+    if (value == true) {
+
+        if (!showImage) {
+            // If showImage is false, then we're currently at black
+            // So we should set the flag to true and fade the image in
+            // We're assuming the correct image is already loaded, which happens
+            // at page load time and after the last image in the queue fades out
+            console.log("showImage is false. Setting to true and fading in");
+            showImage = true;
+            img.fadeIn(2000, 'linear', function() {
+              animateOverlayIn();
+            });
+
+        } else {
+
+            console.log("showImage is true");
+
+            // If showImage is true, then let's either check if we're currently
+            // showing the last image, and either fade to black if so (and reset the
+            // image to the first in the queue), or just load the next image in
+            // the queue otherwise
+            if (imageQueueIndex != imageQueue.length - 1) {
+              console.log("index not equal to last element")
+              imageQueueIndex++;
+              loadViewerImage(imageQueue[imageQueueIndex]);
+              animateOverlayIn();
+            } else {
+              console.log("index IS equal to last element")
+              showImage = false;
+              img.fadeOut(2000, 'linear', function() {
+                imageQueueIndex = 0;
+                loadViewerImage(imageQueue[imageQueueIndex]);
+              });
+            }
+        }
+    }
+}
+
+function animateOverlayIn() {
+  $("#info").animate({ top: "0px" }, 600);
+  overlayPresent = true;
+
+  setTimeout(animateOverlayOut, 5000);
+
+  return false;
+}
+function animateOverlayOut() {
+  $("#info").animate({ top: window.innerWidth * -1 }, 600, function() {
+    $("#info").css('top', window.innerHeight)
+  });
+  overlayPresent = false;
+  return false;
+}
+
+$(window).click(animateOverlayIn);
+$("#info").click(animateOverlayOut);
+$("#info").css('top', window.innerHeight)
+    
+sb = new Spacebrew.Client(window.location.hostname);
+sb.name("Tower View Tablet");
+sb.description("String sending prototype for changing images");
+
+sb.addSubscribe("filename", "string");
+sb.addSubscribe("reload", "boolean");
+sb.addSubscribe("transition", "boolean");
+sb.addSubscribe("info-overlay", "boolean");
+sb.onBooleanMessage = onBooleanMessage;
+sb.onStringMessage = onStringMessage;
+sb.connect();
+
+function onStringMessage(name, value) {
+  console.log("String", name, value);
+    
+  if (name == "filename") {
+    console.log("JS calling loadViewerImage() with "+value);
+    loadViewerImage(value);
+  }        
+}
+
+function onBooleanMessage(name, value) {
+    console.log("Boolean", name, value);
+    
+    if (name == "reload" && value == true) {
+      location.reload();
+    }
+    
+    if (name == "transition") {
+        transition(value);
+    }
+    
+    if (name == "info-overlay") {
+        if (value) {
+            animateOverlayIn();
+        } else {
+            animateOverlayOut();
+        }
+    }
+}
+
+window.addEventListener("deviceorientation", function(data) {
+  // working ranges:
+  // pan: 90-270 -> 0-180
+  // tilt: 50-100
+  pan = data.alpha;
+  tilt = data.gamma * -1;
+
+  var panPct = map(pan, 270, 90, 0, 1);
+  var panPx = (img.width() / 2) - (panPct * img.width());
+
+  var tiltPct = map(tilt, 70, 120, 0, 1);
+  var tiltPx = (img.height() / 2) - (tiltPct * img.height());
+
+  // set translation to center of the image
+  var translateX = img.width() / 4;
+  var translateY = img.height() / 4;
+
+  translateX += -panPx;
+  translateY += tiltPx;
+
+  img.css("-webkit-transform", "translate(-"+translateX+"px, -"+translateY+"px)");
+
+}, false);
+
+
+var map = function(value, inputMin, inputMax, outputMin, outputMax) {
+  return outVal = ((value - inputMin) / (inputMax - inputMin) * (outputMax - outputMin) + outputMin);
+}
+
+});
+</script>
+
+<img id="viewer" />
+<div id="info">
+<p id="caption"></p>
+</div>
+
+</body>
+
+</html>
