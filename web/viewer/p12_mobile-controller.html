@@ -1,0 +1,172 @@
+<!doctype html>
+
+<html lang="en"> 
+<head>
+  <link href="http://fonts.googleapis.com/css?family=Sorts+Mill+Goudy:400,400italic|Fanwood+Text:400,400italic" rel="stylesheet" type="text/css">
+  <script src="js/jquery-1.7.min.js"></script>
+  <script type="text/javascript" src="js/sb-1.3.0.js"></script>
+  <style type="text/css">
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    section img {
+      /*width: 100%*/
+      position: relative;
+      left: -25%;
+    }
+    /*img#background {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }*/
+    div#main {
+      overflow: hidden;
+    }
+    p button {
+      width: 100%;
+      height: 45px;
+      background-color: tan;
+      border: none;
+      border-radius: 10px;
+      font-family: "Sorts Mill Goudy", serif;
+      font-size: 20px;
+      margin-top: 20px
+    }
+    p.caption {
+        font-size: 24px;
+        line-height: 1.3em;
+
+        /*font-family: "Fanwood Text", serif;*/
+        font-family: "Sorts Mill Goudy", serif;
+        font-style: italic;
+
+        padding: 15px;
+        padding-bottom: 40px;
+    }
+  </style>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1, maximum-scale=1">
+</head>
+
+<body>
+
+<!-- JavaScript Setup -->
+<script type="text/javascript">
+
+var pan, tilt;
+var sb;
+
+var imgScale = 2;
+var showImage = true;
+var overlayPresent = false;
+
+var imageQueue = [
+    {
+        image: "penn-street.jpg",
+        caption: "Pennsylvation Station originally stood on 8th Avenue between 32nd and 34th streets."
+    },
+    {
+        image: "penn-construction.jpg",
+        caption: "Construction involved razing the entire area, including approximately 500 buildings in an area once known as the Tenderloin."
+    },
+    {
+        image: "penn-int1.jpg",
+        caption: "The main waiting hall was a cavernous space, with soaring ceilings rising over 100 feet and natural light flooding in from skylights above."
+    },
+    {
+        image: "penn-int2.jpg",
+        caption: "The original platforms still exist underneath present-day Madison Square Garden, though the space has been altered beyong recognition."
+    },
+    // {
+    //     image: "penn-int3.jpg",
+    //     caption: ""
+    // }
+];
+var imageQueueIndex = 0;
+
+$(window).on("load", function() {
+
+// setup
+var img = $("img#viewer");
+
+buildPage();
+
+if (!showImage) {
+  img.hide();
+}
+
+
+function loadViewerImage(obj) {
+  img.attr("src", "img/"+obj.image);
+  
+  img.css("width", (window.innerWidth * imgScale)+"px");
+  img.css("height", (window.innerHeight * imgScale)+"px");
+
+  $("#caption").text(obj.caption);
+
+  var translateX = img.width() / 4;
+  var translateY = img.height() / 4;
+
+  console.log(translateX);
+  console.log(translateY);
+
+  img.css("-webkit-transform", "translate(-"+translateX+"px, -"+translateY+"px)");
+
+  // $("#info").html("window size: "+window.innerWidth+"px,"+window.innerHeight+"px\nimage size: "+img.width()+"px,"+img.height()+"px");
+}
+    
+sb = new Spacebrew.Client(window.location.hostname);
+sb.name("Mobile Controller");
+sb.description("String sending prototype for changing images");
+
+sb.addPublish("image", "string");
+sb.connect();
+
+
+function buildPage() {
+  for (var i = 0; i < imageQueue.length; i++) {
+    // if (i == 0) {
+    //   $("img#background").attr("src", "img/"+imageQueue[i].image);
+    // }
+
+    var append = '';
+    append += '<section>';
+    append += '<img src="img/' + imageQueue[i].image + '" >';
+    append += '<p class="caption">' + imageQueue[i].caption + '<button>Explore</button></p>';
+    append += '</section>';
+    $("div#main").append(append);
+  }
+
+  $("img").css("height", window.innerHeight);
+
+  $("button").click(function() {
+    var src = $(this).parent().parent().children("img").attr("src").split("/")[1];
+    // var src = $(this).attr("src").split("/")[1];
+    sb.send("image", "string", src);
+  });
+}
+
+
+window.addEventListener("deviceorientation", function(data) {
+
+  var tilt = Math.round(data.gamma);
+  tilt = map(tilt, -30, 30, -35, -15);
+  $("section img").css("left", tilt + "px");
+
+}, false);
+
+
+var map = function(value, inputMin, inputMax, outputMin, outputMax) {
+  return outVal = ((value - inputMin) / (inputMax - inputMin) * (outputMax - outputMin) + outputMin);
+}
+
+});
+</script>
+
+<!-- <img id="background"> -->
+<div id="main"></div>
+
+</body>
+
+</html>

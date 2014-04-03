@@ -5,11 +5,25 @@
   <script src="js/jquery-1.7.min.js"></script>
   <script src="js/processing-1.4.1.min.js"></script>
   <script type="text/javascript" src="js/sb-1.3.0.js"></script>
+  <scritp type="text/javascript" src="js/stream.js"></script>
   <style type="text/css">
     body {
       margin: 0;
       padding: 0;
       background-color: black;
+    }
+    div#video {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 0, 0, 0.2);
+    }
+    div#video img {
+      width: 100%;
+      height: 100%;
     }
     img#viewer {
       display: block;
@@ -39,7 +53,8 @@ var pan, tilt;
 var sb;
 
 var imgScale = 2;
-var showImage = false;
+var showImage = true;
+var showVideo = true;
 
 $(window).on("load", function() {
 
@@ -47,11 +62,11 @@ $(window).on("load", function() {
 
 // setup
 var img = $("img#viewer");
+var video = $("div#video");
 
 loadViewerImage("penn-street.jpg");
-if (!showImage) {
-  img.hide();
-}
+
+setTimeout("video.fadeToggle(2000, 'linear');", 10*1000);
 
 function loadViewerImage(filename) {
   img.attr("src", "img/"+filename);
@@ -74,13 +89,12 @@ function loadViewerImage(filename) {
 
 
 sb = new Spacebrew.Client(window.location.hostname);
-sb.name("Tablet Viewer - Strings");
+sb.name("Tower View Tablet");
 sb.description("String sending prototype for changing images");
 
 sb.addSubscribe("filename", "string");
 sb.addSubscribe("reload", "boolean");
 sb.addSubscribe("transition", "boolean");
-sb.addSubscribe("slideshow", "boolean");
 sb.onBooleanMessage = onBooleanMessage;
 sb.onStringMessage = onStringMessage;
 sb.connect();
@@ -101,22 +115,11 @@ function onBooleanMessage(name, value) {
   if (name == "transition") {
     console.log('hay');
     if (value == true) {
-      transition();
+      // showImage = !showImage;
+      // img.fadeToggle(2000, 'swing');
+      showVideo = !showVideo;
+      video.fadeToggle(2000, 'linear');
     }
-  }
-  if (name == "slideshow") {
-    if (value == true) {
-      window.location = "p10_caption-overlay.html";
-    }
-  }
-}
-
-function transition() {
-  img.fadeToggle(2000, 'linear');
-
-  showImage = !showImage;
-  if (showImage) {
-    setTimeout(transition, 15*1000);
   }
 }
 
@@ -166,6 +169,7 @@ var map = function(value, inputMin, inputMax, outputMin, outputMax) {
 </script>
 
 <img id="viewer" />
+<div id="video"><img id="mjpeg_dest"></div>
 <div id="info"></div>
 
 </body>

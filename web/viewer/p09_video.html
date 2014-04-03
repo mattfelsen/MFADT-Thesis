@@ -11,7 +11,7 @@
       padding: 0;
       background-color: black;
     }
-    img#viewer {
+    img#viewer, video {
       display: block;
       position: absolute;
       top: 0;
@@ -41,51 +41,54 @@ var sb;
 var imgScale = 2;
 var showImage = false;
 
-$(window).on("load", function() {
+var imageQueue = [
+  "armory.jpg",
+  // "penn-street.jpg",
+  // "penn-construction.jpg",
+  // "penn-int1.jpg",
+  // "penn-int2.jpg",
+  // "penn-int3.jpg",
+];
+var imageQueueIndex = 0;
 
-//$("#info").html("window size: "+window.innerWidth+"px,"+window.innerHeight+"px");
+$(window).on("load", function() {
 
 // setup
 var img = $("img#viewer");
+var vid = $("video");
+loadViewerImage(imageQueue[imageQueueIndex]);
 
-loadViewerImage("penn-street.jpg");
 if (!showImage) {
   img.hide();
 }
 
+
 function loadViewerImage(filename) {
   img.attr("src", "img/"+filename);
   
-  // img.load(function() {
-  //   var imgTargetWidth = window.innerWidth * imgScale;
-  //   var imgTargetHeight = window.innerHeight * imgScale;
-
-  //   var scaleX = imgTargetWidth / $(this).width();
-  //   var scaleY = imgTargetHeight / $(this).height();
-
-  //   img.css("-webkit-transform", "scale("+scaleX+", "+scaleY+")");
-  // });
-
   img.css("width", (window.innerWidth * imgScale)+"px");
   img.css("height", (window.innerHeight * imgScale)+"px");
+
+  vid.css("width", (window.innerWidth * imgScale)+"px");
+  vid.css("height", (window.innerHeight * imgScale)+"px");
   // $("#info").html("window size: "+window.innerWidth+"px,"+window.innerHeight+"px\nimage size: "+img.width()+"px,"+img.height()+"px");
 }
 
 
 
 sb = new Spacebrew.Client(window.location.hostname);
-sb.name("Tablet Viewer - Strings");
+sb.name("Tower View Tablet");
 sb.description("String sending prototype for changing images");
 
 sb.addSubscribe("filename", "string");
 sb.addSubscribe("reload", "boolean");
 sb.addSubscribe("transition", "boolean");
-sb.addSubscribe("slideshow", "boolean");
 sb.onBooleanMessage = onBooleanMessage;
 sb.onStringMessage = onStringMessage;
 sb.connect();
 
 function onStringMessage(name, value) {
+  console.log("String", name, value);
   if (name == "filename") {
     console.log("JS calling loadViewerImage() with "+value);
     loadViewerImage(value);
@@ -93,30 +96,44 @@ function onStringMessage(name, value) {
 }
 
 function onBooleanMessage(name, value) {
+  console.log("Boolean", name, value);
   if (name == "reload") {
     if (value == true) {
       location.reload();
     }
   }
   if (name == "transition") {
-    console.log('hay');
     if (value == true) {
-      transition();
-    }
-  }
-  if (name == "slideshow") {
-    if (value == true) {
-      window.location = "p10_caption-overlay.html";
-    }
-  }
-}
 
-function transition() {
-  img.fadeToggle(2000, 'linear');
+      if (!showImage) {
+        // If showImage is false, then we're currently at black
+        // So we should set the flag to true and fade the image in
+        // We're assuming the correct image is already loaded, which happens
+        // at page load time and after the last image in the queue fades out
+        console.log("showImage is false. setting to true and fading in");
+        showImage = true;
+        img.fadeIn(2000, 'linear');
+      } else {
+        console.log("showImage is true");
 
-  showImage = !showImage;
-  if (showImage) {
-    setTimeout(transition, 15*1000);
+        // If showImage is true, then let's either check if we're currently
+        // showing the last image, and either fade to black if so (and reset the
+        // image to the first in the queue), or just load the next image in
+        // the queue otherwise
+        if (imageQueueIndex != imageQueue.length - 1) {
+          console.log("index not equal to last element")
+          imageQueueIndex++;
+          loadViewerImage(imageQueue[imageQueueIndex]);
+        } else {
+          console.log("index IS equal to last element")
+          showImage = false;
+          img.fadeOut(2000, 'linear', function() {
+            imageQueueIndex = 0;
+            loadViewerImage(imageQueue[imageQueueIndex]);
+          });
+        }
+      }
+    }
   }
 }
 
@@ -142,6 +159,8 @@ window.addEventListener('deviceorientation', function(data) {
 
   img.css("-webkit-transform", "translate(-"+translateX+"px, -"+translateY+"px)");
 
+  vid.css("-webkit-transform", "translate(-"+translateX+"px, -"+translateY+"px)");
+
   //$("#info").html("pan: "+pan+"\ntilt: "+tilt+"\npan percent: "+panPct+"\npan pixels: "+panPx);
 
   // img.css("left", compassHeading*3);
@@ -165,6 +184,7 @@ var map = function(value, inputMin, inputMax, outputMin, outputMax) {
 });
 </script>
 
+<video src="img/street.mov" autoplay loop controls></video>
 <img id="viewer" />
 <div id="info"></div>
 
