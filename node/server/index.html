@@ -1,0 +1,26 @@
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io.connect('http://localhost');
+  
+  socket.on('connect', function (data) {
+    console.log('connect', data);
+    socket.emit('init',
+      { type: 'controller' }
+    );
+  });
+  
+  socket.on('init', function(data) {
+  	console.log('init', data);
+  });
+
+  socket.on('queue', function(data) {
+    console.log('queue', data)
+  });
+
+  setTimeout(addToQueue, 5000);
+
+  function addToQueue() {
+    socket.emit('queue', { image: "2-birdseye.jpg" });
+  }
+  
+</script>

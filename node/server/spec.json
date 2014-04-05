@@ -1,0 +1,37 @@
+// on connect from controller
+init {
+	type: "controller"
+}
+
+// on connect from viewer
+init {
+	type: "viewer"
+}
+
+// server response to controller
+init {
+	clients: int,
+	queue: [ queue list ]
+}
+
+// server response when the queue changes
+// also embedded in init object
+queue [
+	{
+		id: "client id",
+		image: "filename.jpg",
+		remaining: int
+	},
+	{
+		id: "client id",
+		image: "filename.jpg",
+		remaining: int
+	}
+]
+
+// sent by controller when requesting to view an image
+queue {
+	image: "filename.jpg"
+}
+
+// server responds with queue list
