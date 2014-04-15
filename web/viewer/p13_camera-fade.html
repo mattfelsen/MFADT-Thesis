@@ -19,7 +19,6 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(255, 0, 0, 0.2);
     }
     div#video img {
       width: 100%;
@@ -53,8 +52,8 @@ var pan, tilt;
 var sb;
 
 var imgScale = 2;
-var showImage = true;
-var showVideo = true;
+var showImage = false;
+var showVideo = false;
 
 $(window).on("load", function() {
 
@@ -65,8 +64,12 @@ var img = $("img#viewer");
 var video = $("div#video");
 
 loadViewerImage("penn-street.jpg");
-
-setTimeout("video.fadeToggle(2000, 'linear');", 10*1000);
+if (!showImage) {
+  img.hide();
+}
+if (!showVideo) {
+  video.hide();
+}
 
 function loadViewerImage(filename) {
   img.attr("src", "img/"+filename);
@@ -89,12 +92,13 @@ function loadViewerImage(filename) {
 
 
 sb = new Spacebrew.Client(window.location.hostname);
-sb.name("Tower View Tablet");
+sb.name("Tablet Viewer - Strings");
 sb.description("String sending prototype for changing images");
 
 sb.addSubscribe("filename", "string");
 sb.addSubscribe("reload", "boolean");
 sb.addSubscribe("transition", "boolean");
+sb.addSubscribe("slideshow", "boolean");
 sb.onBooleanMessage = onBooleanMessage;
 sb.onStringMessage = onStringMessage;
 sb.connect();
@@ -115,11 +119,41 @@ function onBooleanMessage(name, value) {
   if (name == "transition") {
     console.log('hay');
     if (value == true) {
-      // showImage = !showImage;
-      // img.fadeToggle(2000, 'swing');
-      showVideo = !showVideo;
-      video.fadeToggle(2000, 'linear');
+      transition();
     }
+  }
+  if (name == "slideshow") {
+    if (value == true) {
+      window.location = "p10_caption-overlay.html";
+    }
+  }
+}
+
+function transition() {
+
+  if (showImage == false) {
+    video.fadeIn(2000, 'linear', function() {
+      $.get("http://lostlandmarks.local/saturation.php?start=0&end=-100").always(function() {
+        img.show();
+        video.fadeOut(2000, 'linear');
+        showImage = true;
+      });
+    });
+  } else {
+    video.fadeIn(2000, 'linear', function() {
+      $.get("http://lostlandmarks.local/saturation.php?start=-100&end=0").always(function() {
+        img.hide();
+        video.fadeOut(2000, 'linear');
+        showImage = false;
+      });
+    });
+  }
+
+  
+
+  showImage = !showImage;
+  if (showImage) {
+    setTimeout(transition, 15*1000);
   }
 }
 
