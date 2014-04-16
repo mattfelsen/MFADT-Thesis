@@ -20,9 +20,11 @@
       width: 100%;
       height: 100%;
     }
-    div#video img {
-      width: 100%;
-      height: 100%;
+    #video-image {
+      /*width: 100%;
+      height: 100%;*/
+      width: 1024px;
+      height: 768px;
     }
     img#viewer {
       display: block;
@@ -50,6 +52,8 @@
 
 var pan, tilt;
 var sb;
+
+var panOffset = 180;
 
 var imgScale = 2;
 var showImage = false;
@@ -100,8 +104,10 @@ sb.addSubscribe("filename", "string");
 sb.addSubscribe("reload", "boolean");
 sb.addSubscribe("transition", "boolean");
 sb.addSubscribe("slideshow", "boolean");
+sb.addSubscribe("heading-offset", "range");
 sb.onBooleanMessage = onBooleanMessage;
 sb.onStringMessage = onStringMessage;
+sb.onRangeMessage = onRangeMessage;
 sb.connect();
 
 function onStringMessage(name, value) {
@@ -129,11 +135,19 @@ function onBooleanMessage(name, value) {
   }
 }
 
+function onRangeMessage(name, value) {
+  // console.log("onRangeMessage", value);
+  if (name == "heading-offset") {
+    panOffset = value;
+    // console.log("setting panOffset to", value);
+  }
+}
+
 function transition() {
 
   if (showImage == false) {
     video.fadeIn(2000, 'linear', function() {
-      $.get("http://lostlandmarks.local/saturation.php?start=0&end=-100").always(function() {
+      $.get("http://lostlandmarks.local/desaturate.php").always(function() {
         img.show();
         video.fadeOut(2000, 'linear');
         showImage = true;
@@ -141,15 +155,13 @@ function transition() {
     });
   } else {
     video.fadeIn(2000, 'linear', function() {
-      $.get("http://lostlandmarks.local/saturation.php?start=-100&end=0").always(function() {
+      $.get("http://lostlandmarks.local/saturate.php").always(function() {
         img.hide();
         video.fadeOut(2000, 'linear');
         showImage = false;
       });
     });
   }
-
-  
 
   showImage = !showImage;
   if (showImage) {
@@ -163,6 +175,9 @@ window.addEventListener('deviceorientation', function(data) {
   // tilt: 50-100
   pan = data.alpha;
   tilt = data.gamma * -1;
+
+  pan += panOffset;
+  pan %= 360;
 
   var panPct = map(pan, 270, 90, 0, 1);
   var panPx = (img.width() / 2) - (panPct * img.width());
