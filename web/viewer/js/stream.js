@@ -1,5 +1,6 @@
 var dest;
 var lastTime = 0;
+var fps = document.getElementById("fps");
 
 function init() {
   dest = document.getElementById("video-image");
@@ -14,7 +15,7 @@ function reload_img () {
   var delta = currentTime - lastTime;
   var fps = 1000 / delta;
   lastTime = currentTime;
-  document.getElementById("fps").innerHTML = Math.floor(fps)+"fps";
+  if (fps) fps.innerHTML = Math.floor(fps)+"fps";
 }
 
 function error_img () {

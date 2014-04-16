@@ -63,13 +63,14 @@ $(window).on("load", function() {
 var img = $("img#viewer");
 var video = $("div#video");
 
-loadViewerImage("penn-street.jpg");
 if (!showImage) {
   img.hide();
 }
 if (!showVideo) {
   video.hide();
 }
+
+loadViewerImage("penn-street.jpg");
 
 function loadViewerImage(filename) {
   img.attr("src", "img/"+filename);
@@ -91,7 +92,7 @@ function loadViewerImage(filename) {
 
 
 
-sb = new Spacebrew.Client(window.location.hostname);
+sb = new Spacebrew.Client("lostlandmarks.cc");
 sb.name("Tablet Viewer - Strings");
 sb.description("String sending prototype for changing images");
 
@@ -117,7 +118,6 @@ function onBooleanMessage(name, value) {
     }
   }
   if (name == "transition") {
-    console.log('hay');
     if (value == true) {
       transition();
     }
