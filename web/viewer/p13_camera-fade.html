@@ -5,7 +5,6 @@
   <script src="js/jquery-1.7.min.js"></script>
   <script src="js/processing-1.4.1.min.js"></script>
   <script type="text/javascript" src="js/sb-1.3.5.js"></script>
-  <script type="text/javascript" src="js/stream.js"></script>
   <style type="text/css">
     body {
       margin: 0;
@@ -45,7 +44,7 @@
   <meta name="viewport" content="width=1024, height=748, user-scalable=no, minimum-scale=1, maximum-scale=1">
 </head>
 
-<body onload="setTimeout('init();', 100);">
+<body>
 
 <!-- JavaScript Setup -->
 <script type="text/javascript">
@@ -58,6 +57,9 @@ var panOffset = 180;
 var imgScale = 2;
 var showImage = false;
 var showVideo = false;
+
+var halted = false;
+var lastTime;
 
 $(window).on("load", function() {
 
@@ -73,6 +75,10 @@ if (!showImage) {
 if (!showVideo) {
   video.hide();
 }
+
+var dest = document.getElementById("video-image");
+dest.onload = reloadVideoImage;
+dest.onerror = reloadVideoImage;
 
 loadViewerImage("penn-street.jpg");
 
@@ -146,19 +152,31 @@ function onRangeMessage(name, value) {
 function transition() {
 
   if (showImage == false) {
+    halted = false;
+    reloadVideoImage();
+
     video.fadeIn(2000, 'linear', function() {
       $.get("http://lostlandmarks.local/desaturate.php").always(function() {
         img.show();
-        video.fadeOut(2000, 'linear');
         showImage = true;
+
+        video.fadeOut(2000, 'linear', function() {
+          halted = true;
+        });
       });
     });
   } else {
+    halted = false;
+    reloadVideoImage();
+
     video.fadeIn(2000, 'linear', function() {
       $.get("http://lostlandmarks.local/saturate.php").always(function() {
         img.hide();
-        video.fadeOut(2000, 'linear');
         showImage = false;
+
+        video.fadeOut(2000, 'linear', function() {
+          halted = true;
+        });
       });
     });
   }
@@ -208,6 +226,20 @@ window.addEventListener('deviceorientation', function(data) {
   // translate(translateX * 1.5, translateY);
   // translate(0, deviceTilt * 6);
 }, false);
+
+
+function reloadVideoImage () {
+  //dest.src = "http://lostlandmarks.local/cam_pic.php?time=" + new Date().getTime();
+  if (!halted) {
+    dest.src = "http://lostlandmarks.local/cam.jpg?time=" + new Date().getTime();
+    //dest.src = "http://lostlandmarks.local:8080/cam.jpg?time=" + new Date().getTime();
+    var currentTime = Date.now();
+    var delta = currentTime - lastTime;
+    var fps = 1000 / delta;
+    lastTime = currentTime;
+    //document.getElementById("fps").innerHTML = Math.floor(fps)+"fps";
+  }
+}
 
 
 var map = function(value, inputMin, inputMax, outputMin, outputMax) {
