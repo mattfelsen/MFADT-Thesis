@@ -332,33 +332,28 @@
     <div class="row" style="padding-top: 10px;">
       <div class="col-md-2 col-md-offset-5 text-center">
         <div class="featurette-item">
-          <!-- <i class="glyphicon glyphicon-question-sign"></i> -->
-          <img src="assets/img/site-icons/site-1.png" style="width: 80px; padding-top: 20px">
+          <img src="assets/img/site-icons/site-1.png" style="width: 80px; padding-top: 20px;">
           <h3>April 26<sup>th</sup></h3>
           <h3>West 14th St, just west of 6th Ave</h3>
-          
-          <!-- <p>Up-up-and-away with this starter template.</p> -->
         </div>
       </div>
       <div class="col-md-2 text-center">
         <div class="featurette-item">
           <i class="glyphicon glyphicon-question-sign"></i>
           <h3>May 3<sup>rd</sup></h3>
-          <!-- <p>For you are a magnet and I am steel.</p> -->
         </div>
       </div>
       <div class="col-md-2 text-center">
         <div class="featurette-item">
           <i class="glyphicon glyphicon-question-sign"></i>
           <h3>May 10<sup>th</sup></h3>
-          <!-- <p>Protect yourself. Don't design like it's 1999.</p> -->
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="callout" id="contact">
+<div id="contact">
   <div class="vert">
     <div class="col-md-12 text-center"><h1>Contact</h1></div>
     <div class="col-md-12 text-center">&nbsp;</div>
@@ -388,8 +383,6 @@
             <span class="bumpup">&nbsp; Get in touch!</span>
           </a>
         </p>
-        <!-- <hr> -->
-        <!-- <p>Built with <i class="icon-heart-empty"></i> at <a href="http://www.bootply.com">Bootply</a>.<br>Company ©2013</p> -->
       </div>
     </div>
   </div>
@@ -445,8 +438,11 @@ $(document).ready(function() {
 
     var viewerPanImages = [];
     var currentViewerPanImage = $("#viewer").attr('src');
+    var preloadImage = document.createElement('img')
     for (var i = 1; i < 10; i++) {
-      viewerPanImages.push("assets/img/viewer-pan/viewer-pan-"+i+".png");
+      var src = "assets/img/viewer-pan/viewer-pan-"+i+".png";
+      viewerPanImages.push(src);
+      preloadImage.src = src;
     }
 
     $('.header').mousemove(function(e) {
