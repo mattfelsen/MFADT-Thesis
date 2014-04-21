@@ -75,7 +75,7 @@
     }
 
     .navbar {
-      //padding-top: 20px;
+      /*padding-top: 20px;*/
       padding-right: 200px;
 /*      background-color: rgba(255, 255, 255, 0.6);*/
     }
@@ -109,6 +109,12 @@
       letter-spacing: -1px;
     }
 
+    @media only screen and (max-width : 568px) {
+      .header h1 {
+        font-size: 48px;
+      }
+    }
+
     .header .lead {
       /*color:#eeeeee;*/
       color: black;
@@ -125,16 +131,23 @@
       background: url("assets/img/background.jpg") no-repeat center 0 fixed;
 /*      background: url("assets/img/penn-concourse-viewer.jpg") no-repeat center bottom fixed;*/
       -webkit-filter: sepia(30%);
+      filter: sepia(30%);
 
-      -webkit-background-size: 100%;
+      -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
-      background-size: 100%;
+      background-size: cover;
 
       box-shadow: inset 0 0 100px rgba(0,0,0,.5);
 
       padding-top: 250px;
       text-align: center;
+    }
+
+    @media only screen and (max-width : 640px) {
+      .header {
+        padding-top: 100px;
+      }
     }
 
     .header .follow {
@@ -149,21 +162,6 @@
       bottom: 5px;
     }
 
-    .blurb {
-      padding: 120px 0;
-      background-color:#fefefe;
-    }
-
-    .blurb .panel {
-      background-color:transparent;
-    }
-
-    .bright {
-      /*background: #7fbbda url("http://www.bootply.com/assets/example/bg_suburb.jpg") no-repeat center center fixed; */
-      background: url("assets/img/background.jpg") no-repeat center 0 fixed;
-      color:#fff;
-    }
-
     .featurette {
       /*background: #545455;*/
       background: #eee;
@@ -173,7 +171,7 @@
     }
 
     .featurette-item {
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
 
     .featurette-item > i {
@@ -183,7 +181,7 @@
       display: inline-block;
       font-size: 56px;
       width: 140px;
-      height: 140px;
+      height: 120px;
       line-height: 136px;
       vertical-align: middle;
       text-align: center;
@@ -191,39 +189,6 @@
 
     .featurette-item > i:hover {
       font-size: 68px;
-    }
-
-    .callout {
-      /*color: #ffffff;*/
-      color: black;
-      padding-top:7%;
-      height: 100%;
-      width: 100%;
-      /*background: url("http://www.bootply.com/assets/example/bg_suburb.jpg") no-repeat center center fixed; */
-      background: url("assets/img/background.jpg") no-repeat center -100px fixed;
-      /*-webkit-background-size: cover;
-      -moz-background-size: cover;
-      -o-background-size: cover;
-      background-size: cover;*/
-
-      box-shadow: inset 0 0 100px rgba(0,0,0,.5);
-    }
-
-    .gallery {
-      padding: 50px 0;
-    }
-
-    .call-to-action {
-      background: #eeeeee;
-      padding: 50px 0;
-    }
-
-    .call-to-action .btn {
-      margin: 10px;
-    }
-
-    footer {
-      padding: 100px 0;
     }
 
     #about {
@@ -249,12 +214,34 @@
       color: white;
     }
 
-    .viewer {
-      position: fixed;
-      bottom: 0;
-      left: 24%;
-      opacity: 0;
+    #contact {
+      /*color: #ffffff;*/
+      color: black;
+      padding-top:7%;
+      height: 100%;
+      width: 100%;
+      /*background: url("http://www.bootply.com/assets/example/bg_suburb.jpg") no-repeat center center fixed; */
+      background: url("assets/img/background.jpg") no-repeat center -100px fixed;
+      /*-webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;*/
 
+      box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+    }
+
+    #viewer {
+      position: absolute;
+      bottom: 0px;
+      left: 12%;
+      height: 475px;
+      z-index: -1;
+    }
+
+    @media only screen and (max-width : 640px) {
+      #viewer {
+        display: none;
+      }
     }
 
   </style>
@@ -287,22 +274,14 @@
 <div class="header vert" id="home">
   <div class="container">
 
+    <img id="viewer" src="assets/img/viewer-pan/viewer-pan-1.png">
+
     <h1>Lost Landmarks</h1>
-      <p class="lead">Explore New York's forgotten past.</p>
-      <div>&nbsp;</div>
-      <p>
-        <!-- <a href="https://twitter.com/LostLandmarks" data-show-count="false" class="btn btn-default">
-          <i class="icon-twitter icon-2x"></i>
-          <span class="follow">Follow @LostLandmarks</span>
-        -->
-        <a class="btn" href="#about">Learn more</a>
-        </a>
-
-      </p>
-<!--       <p class="follow">
-        Stay in touch to receive the latest updates.
-      </p> -->
-
+    <p class="lead">Explore New York's forgotten past.</p>
+    <div>&nbsp;</div>
+    <p>
+      <a class="btn" href="#about">Learn more</a>
+    </p>
   </div>
 </div>
 
@@ -346,15 +325,18 @@
     <hr>
     <div class="row">
       <div class="col-md-7 col-md-offset-5" style="font-size: 20px;">
-        Check back or follow <a href="https://twitter.com/intent/user?screen_name=LostLandmarks" style="color: white;">@LostLandmarks</a> for updates on where to find Lost Landmarks – locations will be revealed shortly! You'll be able to find the viewer on Saturdays (weather permitting!) in late April and
+        Check back or follow <a href="https://twitter.com/intent/user?screen_name=LostLandmarks" style="color: white;">@LostLandmarks</a> for updates on where to find Lost Landmarks! You'll be able to find the viewer on Saturdays (weather permitting!) in late April and
         early May at sites throughout Manhattan.
       </div>
     </div>
     <div class="row" style="padding-top: 10px;">
       <div class="col-md-2 col-md-offset-5 text-center">
         <div class="featurette-item">
-          <i class="glyphicon glyphicon-question-sign"></i>
+          <!-- <i class="glyphicon glyphicon-question-sign"></i> -->
+          <img src="assets/img/site-icons/site-1.png" style="width: 80px; padding-top: 20px">
           <h3>April 26<sup>th</sup></h3>
+          <h3>West 14th St, just west of 6th Ave</h3>
+          
           <!-- <p>Up-up-and-away with this starter template.</p> -->
         </div>
       </div>
@@ -415,8 +397,6 @@
   </div>
 </div>
 
-<!-- <img class="viewer" src="assets/img/viewer.png"> -->
-
 
 
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -462,6 +442,49 @@ $(document).ready(function() {
       var offset = $(window).scrollTop();
       $(".viewer").css("opacity", (offset - 1200) / 248);
     }) */
+
+    var viewerPanImages = [];
+    var currentViewerPanImage = $("#viewer").attr('src');
+    for (var i = 1; i < 10; i++) {
+      viewerPanImages.push("assets/img/viewer-pan/viewer-pan-"+i+".png");
+    }
+
+    $('.header').mousemove(function(e) {
+      var buffer = window.innerWidth * 0.2;
+      var pct = (e.pageX - buffer) / (window.innerWidth - buffer - buffer);
+      var index = parseInt(pct * viewerPanImages.length);
+      var newViewerPanImage = viewerPanImages[index];
+
+      if (newViewerPanImage != currentViewerPanImage) {
+        $("#viewer").attr('src', newViewerPanImage);
+        currentViewerPanImage = newViewerPanImage;
+        // console.log("Changing to index", index);
+      }
+    })
+
+    var currentViewerPanIndex = 1;
+    var viewerPanReverse = false;
+    var changeViewerPanTimer = function() {
+      if (!viewerPanReverse) {
+        currentViewerPanIndex++;
+        if (currentViewerPanIndex >= viewerPanImages.length) {
+          viewerPanReverse = true;
+          currentViewerPanIndex = viewerPanImages.length;
+        }
+      } else {
+        currentViewerPanIndex--;
+        if (currentViewerPanIndex <= 0) {
+          viewerPanReverse = false;
+          currentViewerPanIndex = 0;
+        }
+      }
+      
+      $("#viewer").attr('src', viewerPanImages[currentViewerPanIndex]);
+      // alert(viewerPanImages[++index]);
+      };
+    if (window.innerWidth >= 640 && window.innerWidth <= 1024) {
+      setInterval(changeViewerPanTimer, 300);
+    }
 
 });
 
