@@ -438,10 +438,11 @@ $(document).ready(function() {
 
     var viewerPanImages = [];
     var currentViewerPanImage = $("#viewer").attr('src');
-    var preloadImage = document.createElement('img')
     for (var i = 1; i < 10; i++) {
       var src = "assets/img/viewer-pan/viewer-pan-"+i+".png";
       viewerPanImages.push(src);
+
+      var preloadImage = document.createElement('img')
       preloadImage.src = src;
     }
 
