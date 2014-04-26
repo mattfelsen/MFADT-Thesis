@@ -25,6 +25,7 @@ function setup (){
 	sb.addPublish("slideshow", "boolean", "");
 	sb.addPublish("filename", "string", "");
 	sb.addPublish("heading-offset", "range", "");
+	sb.addPublish("tilt-offset", "range", "");
 
 	// override Spacebrew events - this is how you catch events coming from Spacebrew
 	sb.onOpen = onOpen;
@@ -63,7 +64,7 @@ function onButtonPress (){
 }
 
 function onRangePress() {
-	sb.send("heading-offset", "range", $(this).val());
+	sb.send($(this).attr("id"), "range", $(this).val());
 }
 
 function onStringPress(evt) {
