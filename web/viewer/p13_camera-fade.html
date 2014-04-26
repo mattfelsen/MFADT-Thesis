@@ -49,10 +49,16 @@
 <!-- JavaScript Setup -->
 <script type="text/javascript">
 
+// parse url
+var queryString = location.search.substring(1).split('&');
+var qs = {};
+for (var i in queryString) { var s = queryString[i].split('='); var k = s[0]; var v = s[1]; qs[k] = v; }
+
 var pan, tilt;
 var sb;
 
 var panOffset = 180;
+if (qs["offset"] != undefined) panOffset = qs["offset"];
 
 var imgScale = 2;
 var showImage = false;
@@ -156,28 +162,42 @@ function transition() {
     reloadVideoImage();
 
     video.fadeIn(2000, 'linear', function() {
-      $.get("http://lostlandmarks.local/desaturate.php").always(function() {
+
+      var tmpImg = document.createElement('img');
+      tmpImg.src = "http://lostlandmarks.local/desaturate.php";
+      tmpImg.onerror = function() {
+      //$.get("http://lostlandmarks.local/desaturate.php").always(function() {
+
         img.show();
         showImage = true;
 
         video.fadeOut(2000, 'linear', function() {
           halted = true;
         });
-      });
+      
+      //});
+      }
     });
   } else {
     halted = false;
     reloadVideoImage();
 
     video.fadeIn(2000, 'linear', function() {
-      $.get("http://lostlandmarks.local/saturate.php").always(function() {
+
+      var tmpImg = document.createElement('img');
+      tmpImg.src = "http://lostlandmarks.local/saturate.php";
+      tmpImg.onerror = function() {
+      //$.get("http://lostlandmarks.local/saturate.php").always(function() {
+
         img.hide();
         showImage = false;
 
         video.fadeOut(2000, 'linear', function() {
           halted = true;
+          location.href = location.pathname + "?offset=" + panOffset;
         });
-      });
+      //});
+      }
     });
   }
 
