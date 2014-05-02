@@ -201,7 +201,7 @@
     #press {
       color: black;
       padding-top:7%;
-      height: 100%;
+      min-height: 100%;
       width: 100%;
       
       background: url("assets/img/background.jpg") no-repeat left top fixed;
@@ -214,7 +214,7 @@
     #contact {
       padding-top:7%;
       color: black;
-      height: 100%;
+      min-height: 100%;
       width: 100%;
 
       background: url("assets/img/background.jpg") no-repeat center -100px fixed;
@@ -301,7 +301,6 @@
 <nav id="navbar" class="navbar navbar-fixed-top navbar-bold" data-spy="affix" data-offset-top="1000">
   <div class="container">
     <div class="navbar-header">
-      <!-- <a href="#" class="navbar-brand">Lost Landmarks</a> -->
       <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -497,19 +496,19 @@
     <div class="col-md-12 text-center">&nbsp;</div>
     <div class="row">
       <div class="col-sm-4 text-center" style="font-size: 20px;">
-        <a href="http://untappedcities.com/2014/04/25/lost-landmarks-project-give-pedestrians-on-location-view-onto-nyc-history/">
+        <a target="_blank" href="http://untappedcities.com/2014/04/25/lost-landmarks-project-give-pedestrians-on-location-view-onto-nyc-history/">
           “Lost Landmarks Project Gives Pedestrians On-Location View onto NYC History”<br>
           - Untapped Cities
         </a>
       </div>
       <div class="col-sm-4 text-center" style="font-size: 20px;">
-        <a href="http://ny.curbed.com/archives/2014/04/25/lost_landmarks_project_visualizes_new_yorks_past_onsite.php">
+        <a target="_blank" href="http://ny.curbed.com/archives/2014/04/25/lost_landmarks_project_visualizes_new_yorks_past_onsite.php">
           “'Lost Landmarks' Project Visualizes New York's Past On-Site”<br>
           - Curbed NY
         </a>
       </div>
       <div class="col-sm-4 text-center" style="font-size: 20px;">
-        <a href="https://twitter.com/mlrossi80/status/460149070364172288">
+        <a target="_blank" href="https://twitter.com/mlrossi80/status/460149070364172288">
           “Amazing public art scholarship”<br>
           - Matthew Louis Rossi @mlrossi80
         </a>
@@ -522,19 +521,19 @@
 
     <div class="row">
       <div class="col-sm-4 text-center" style="font-size: 20px;">
-        <a href="https://twitter.com/WhatstheT_DB/status/459724931547140096">
+        <a target="_blank" href="https://twitter.com/WhatstheT_DB/status/459724931547140096">
           “Leave it to @mattfelsen to create a #timemachine in #NYC.”<br>
           - Dana Bassett @WhatstheT_DB
         </a>
       </div>
       <div class="col-sm-4 text-center" style="font-size: 20px;">
-        <a href="https://twitter.com/mmelissafbaby/status/460193186984771584">
+        <a target="_blank" href="https://twitter.com/mmelissafbaby/status/460193186984771584">
           “Awesome & new art experience. Definitely looking forward to the next placement!”<br>
           - mmelissaFbaby ☮ @mmelissafbaby
         </a>
       </div>
       <div class="col-sm-4 text-center" style="font-size: 20px;">
-        <a href="https://twitter.com/SaraBrandin/status/460231543639007232">
+        <a target="_blank" href="https://twitter.com/SaraBrandin/status/460231543639007232">
             “Loved looking through the @LostLandmarks lens today to see a glimpse of past NYC.”<br>
           - Sara Brandin @SaraBrandin
         </a>
@@ -600,95 +599,100 @@
 
 $(document).ready(function() {
 
-    /* highlight the top nav as scrolling occurs */
-    $("body").scrollspy({ target: "#navbar" });
+  /* highlight the top nav as scrolling occurs */
+  $("body").scrollspy({ target: "#navbar" });
 
-    var lastScrollTarget;
-    $('#navbar').on('activate.bs.scrollspy', function () {
-      var target = $("li[class='active']").children("a").attr("href");
+  var lastScrollTarget;
+  $('#navbar').on('activate.bs.scrollspy', function () {
+    var target = $("li[class='active']").children("a").attr("href");
 
-      if (target == lastScrollTarget) return;
+    if (target == lastScrollTarget) return;
 
-      if (target == "#schedule") {
-        $("#navbar li a").css("color", "white");
-      } else {
-        $("#navbar li a").css("color", "black");
-      }
+    /* change menu text to white for schedule section with dark backgruond */
+    if (target == "#schedule") {
+      $("#navbar li a").css("color", "white");
+    } else {
+      $("#navbar li a").css("color", "black");
+    }
 
-      if (target == "#gallery") {
-        $("#navbar").css("background-color", "rgba(255, 255, 255, 0.4)");
-        $(document).bind('keydown', function(evt) {
-          if (evt.keyCode == 37) {
-            $('#carousel-gallery').carousel('prev');
-          }
-          if (evt.keyCode == 39) {
-            $('#carousel-gallery').carousel('next');
-          }
-        });
-      } else {
-        $("#navbar").css("background-color", "rgba(255, 255, 255, 0)");
-        $(document).unbind('keydown');
-      }
+    /* change menu background to white for gallery section with dark backgruond */
+    /* also set up left/right arrow keybindings to advance gallery when this
+       section is visible */
+    if (target == "#gallery") {
+      $("#navbar").css("background-color", "rgba(255, 255, 255, 0.4)");
+      
+      $(document).bind('keydown', function(evt) {
+        if (evt.keyCode == 37) {
+          $('#carousel-gallery').carousel('prev');
+        }
+        if (evt.keyCode == 39) {
+          $('#carousel-gallery').carousel('next');
+        }
+      });
+    } else {
+      $("#navbar").css("background-color", "rgba(255, 255, 255, 0)");
+      $(document).unbind('keydown');
+    }
+  });
+
+  /* advance the gallery when clicking the image. useful mostly for mobile */
+  $('#gallery img').click(function() {
+    $('#carousel-gallery').carousel('next');
+  });
+
+  $(".navbar a, a[href='#about']").click(function(e) {
+    $("body,html").animate({ scrollTop: $($(this).attr("href")).offset().top }, 400);
+    return false;
+  });
+
+
+
+  var viewerPanImages = [];
+  var currentViewerPanImage = $("#viewer").attr('src');
+  for (var i = 1; i < 10; i++) {
+    var src = "assets/img/viewer-pan/viewer-pan-"+i+".png";
+    viewerPanImages.push(src);
+
+    //var preloadImage = document.createElement('img')
+    //preloadImage.src = src;
+  }
+
+  $('.header').mousemove(function(e) {
+    var buffer = window.innerWidth * 0.2;
+    var pct = (e.pageX - buffer) / (window.innerWidth - buffer - buffer);
+    var index = parseInt(pct * viewerPanImages.length);
+    var newViewerPanImage = viewerPanImages[index];
+
+    if (newViewerPanImage != currentViewerPanImage) {
+      $("#viewer").attr('src', newViewerPanImage);
+      currentViewerPanImage = newViewerPanImage;
+      // console.log("Changing to index", index);
+    }
   })
 
-    $(".navbar a, a[href='#about']").click(function(e) {
-      $("body,html").animate({ scrollTop: $($(this).attr("href")).offset().top }, 400);
-      return false;
-    })
-
-    // Fade in viewer
-    /*
-    $(window).scroll(function() {
-      var offset = $(window).scrollTop();
-      $(".viewer").css("opacity", (offset - 1200) / 248);
-    }) */
-
-    var viewerPanImages = [];
-    var currentViewerPanImage = $("#viewer").attr('src');
-    for (var i = 1; i < 10; i++) {
-      var src = "assets/img/viewer-pan/viewer-pan-"+i+".png";
-      viewerPanImages.push(src);
-
-      //var preloadImage = document.createElement('img')
-      //preloadImage.src = src;
-    }
-
-    $('.header').mousemove(function(e) {
-      var buffer = window.innerWidth * 0.2;
-      var pct = (e.pageX - buffer) / (window.innerWidth - buffer - buffer);
-      var index = parseInt(pct * viewerPanImages.length);
-      var newViewerPanImage = viewerPanImages[index];
-
-      if (newViewerPanImage != currentViewerPanImage) {
-        $("#viewer").attr('src', newViewerPanImage);
-        currentViewerPanImage = newViewerPanImage;
-        // console.log("Changing to index", index);
+  var currentViewerPanIndex = 1;
+  var viewerPanReverse = false;
+  var changeViewerPanTimer = function() {
+    if (!viewerPanReverse) {
+      currentViewerPanIndex++;
+      if (currentViewerPanIndex >= viewerPanImages.length) {
+        viewerPanReverse = true;
+        currentViewerPanIndex = viewerPanImages.length;
       }
-    })
-
-    var currentViewerPanIndex = 1;
-    var viewerPanReverse = false;
-    var changeViewerPanTimer = function() {
-      if (!viewerPanReverse) {
-        currentViewerPanIndex++;
-        if (currentViewerPanIndex >= viewerPanImages.length) {
-          viewerPanReverse = true;
-          currentViewerPanIndex = viewerPanImages.length;
-        }
-      } else {
-        currentViewerPanIndex--;
-        if (currentViewerPanIndex <= 0) {
-          viewerPanReverse = false;
-          currentViewerPanIndex = 0;
-        }
+    } else {
+      currentViewerPanIndex--;
+      if (currentViewerPanIndex <= 0) {
+        viewerPanReverse = false;
+        currentViewerPanIndex = 0;
       }
-      
-      $("#viewer").attr('src', viewerPanImages[currentViewerPanIndex]);
-      // alert(viewerPanImages[++index]);
-      };
-    if (window.innerWidth >= 640 && window.innerWidth <= 1024) {
-      setInterval(changeViewerPanTimer, 300);
     }
+    
+    $("#viewer").attr('src', viewerPanImages[currentViewerPanIndex]);
+    // alert(viewerPanImages[++index]);
+    };
+  if (window.innerWidth >= 640 && window.innerWidth <= 1024) {
+    setInterval(changeViewerPanTimer, 300);
+  }
 
 });
 
