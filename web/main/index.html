@@ -52,36 +52,30 @@
     }
 
     .header .btn {
+      color: black;
       font-size:1.6em;
       border-color:rgba(168, 127, 111, 0.77);
-      padding:15px;
-/*       background-color:transparent;*/
+      padding: 15px;
       background-color: rgba(241, 241, 241, 0.75);
-/*      color:#ffffff;*/
-/*      color:#777777;*/
-      color: black;
-
     }
 
     .header .btn:hover {
       background-color:#eeeeee;
-/*      color:#777777;*/
-/*      color: black;*/
     }
 
     a {
-      /*color:#fff;*/
       color: black;
     }
 
+    a:hover {
+      color: #333;
+    }
+
     .navbar {
-      /*padding-top: 20px;*/
       padding-right: 200px;
-/*      background-color: rgba(255, 255, 255, 0.6);*/
     }
 
     .navbar li a:hover, .navbar-bold li.active {
-      /*background-color:#22dd56;*/
       background-color: transparent;
       font-weight: bold;
     }
@@ -93,15 +87,9 @@
     }
 
     .header h1 {
-      /*-webkit-text-stroke: 1px rgba(0,0,0,0.1);*/
-      /*color:#431a6d;
-      color:#fff;*/
       color: black;
       margin-left:-5px;
       margin-bottom:5px;
-
-      /*font-size:110px;*/
-
       font-style: italic;
       font-weight: normal;
       text-shadow: black 1px 1px 1px;
@@ -116,20 +104,14 @@
     }
 
     .header .lead {
-      /*color:#eeeeee;*/
       color: black;
-      /*font-size:25px;*/
-
       font-size: 2em;
       letter-spacing: -1px;
     }
 
     .header {
       height: 100%;
-      /*background: #11cc45 url("http://www.bootply.com/assets/example/pt_squares_lg.png") repeat center center fixed;*/
-      /*background: url("assets/img/background.jpg") no-repeat -200px -100px fixed;*/
       background: url("assets/img/background.jpg") no-repeat center 0 fixed;
-/*      background: url("assets/img/penn-concourse-viewer.jpg") no-repeat center bottom fixed;*/
       -webkit-filter: sepia(30%);
       filter: sepia(30%);
 
@@ -163,10 +145,8 @@
     }
 
     .featurette {
-      /*background: #545455;*/
       background: #eee;
       padding: 50px 0;
-      /*color: #ffffff;*/
       color: black;
     }
 
@@ -175,7 +155,6 @@
     }
 
     .featurette-item > i {
-      /*border: 3px solid #ffffff;*/
       border: 3px solid #black;
       border-radius: 50%;
       display: inline-block;
@@ -202,31 +181,43 @@
     }
 
     #schedule {
+      color: white;
       min-height: 100%;
 
       background: url("assets/img/penn-concourse-viewer.jpg") no-repeat center bottom fixed;
-/*      background: url("assets/img/penn-concourse.jpg") no-repeat center bottom fixed;*/
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
       background-size: cover;
-
-      color: white;
     }
 
-    #contact {
-      /*color: #ffffff;*/
+    #gallery {
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      background: url("assets/img/background.jpg") no-repeat -200px -600px fixed;
+    }
+
+    #press {
       color: black;
       padding-top:7%;
       height: 100%;
       width: 100%;
-      /*background: url("http://www.bootply.com/assets/example/bg_suburb.jpg") no-repeat center center fixed; */
-      background: url("assets/img/background.jpg") no-repeat center -100px fixed;
-      /*-webkit-background-size: cover;
-      -moz-background-size: cover;
-      -o-background-size: cover;
-      background-size: cover;*/
+      
+      background: url("assets/img/background.jpg") no-repeat left top fixed;
+      -webkit-filter: sepia(30%);
+      filter: sepia(30%);
 
+      box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+    }
+
+    #contact {
+      padding-top:7%;
+      color: black;
+      height: 100%;
+      width: 100%;
+
+      background: url("assets/img/background.jpg") no-repeat center -100px fixed;
       box-shadow: inset 0 0 100px rgba(0,0,0,.5);
     }
 
@@ -238,11 +229,63 @@
       z-index: -1;
     }
 
+    /* don't show the viewer interactive for small screens */
     @media only screen and (max-width : 640px) {
       #viewer {
         display: none;
       }
     }
+
+    /* carousel gallery stuff */
+    #gallery .carousel, #gallery .carousel-inner, #gallery .item {
+      height: 100%;
+      min-height: 100%;
+      vertical-align: middle;
+    }
+    #gallery .item::before {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    #gallery img {
+      max-height: 80%;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 6%;
+      border: 10px solid white;
+      box-shadow: 0 0 50px -10px black;
+    }
+    #gallery img::before {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .carousel .item {
+    left: 0 !important;
+      -webkit-transition: opacity .5s; /*adjust timing here */
+      -moz-transition: opacity .5s;
+      -o-transition: opacity .5s;
+      transition: opacity .5s;
+    }
+    .carousel-control {
+      background-image: none !important;  /* remove background gradients on controls */
+    }
+    .carousel .active.left,
+    .carousel .active.right {
+      left:0;
+      opacity:0;
+      z-index:2;
+    }
+    .carousel .next,
+    .carousel .prev {
+      left:0;
+      opacity:1;
+      z-index:1;
+    }
+    .carousel-control {
+      color: black;
+      text-shadow: 0 1px 2px black;
+    }
+
+
 
   </style>
 </head>
@@ -265,6 +308,8 @@
         <li><a href="#home">Home</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#schedule">Schedule</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#press">Press</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </div>
@@ -277,7 +322,10 @@
     <img id="viewer" src="assets/img/viewer-pan/viewer-pan-1.png">
 
     <h1>Lost Landmarks</h1>
-    <p class="lead">Explore New York's forgotten past.</p>
+    <p class="lead">
+      Explore New York's forgotten past<br>
+      with augmented reality binocular viewers.
+    </p>
     <div>&nbsp;</div>
     <p>
       <a class="btn" href="#about">Learn more</a>
@@ -306,9 +354,7 @@
       </div>
       <div class="col-md-4" style="padding: 25px;">
         <p>
-          The classic binocular viewer has been reimagined and updated with digital technologies to provide a window into the past.
-          Check back or follow <a href="https://twitter.com/intent/user?screen_name=LostLandmarks">@LostLandmarks</a> for news on how to
-          partake in this magical experience.
+          The classic binocular viewer has been reimagined and updated with digital technologies to provide a window into the past, allowing you to view and explore historic images in the same location they were captured years ago.
         </p>
       </div>
     </div>
@@ -325,8 +371,7 @@
     <hr>
     <div class="row">
       <div class="col-md-7 col-md-offset-5" style="font-size: 20px;">
-        Check back or follow <a href="https://twitter.com/intent/user?screen_name=LostLandmarks" style="color: white;">@LostLandmarks</a> for updates on where to find Lost Landmarks! You'll be able to find the viewer on Saturdays (weather permitting!) in late April and
-        early May at sites throughout Manhattan.
+        Follow <a href="https://twitter.com/intent/user?screen_name=LostLandmarks" style="color: white;">@LostLandmarks</a> for updates on where to find Lost Landmarks! You'll be able to find the viewer on Saturdays Spring 2014 at sites throughout Manhattan.
       </div>
     </div>
     <div class="row" style="padding-top: 10px;">
@@ -339,9 +384,9 @@
       </div>
       <div class="col-md-2 text-center">
         <div class="featurette-item">
-          <i class="glyphicon glyphicon-question-sign"></i>
+          <img src="assets/img/site-icons/site-2.png" style="width: 60px; padding-top: 35px; padding-bottom: 25px;">
           <h3>May 3<sup>rd</sup></h3>
-          <h3>East 42nd St at Park Ave</h3>
+          <h3>East 42nd St & Vanderbilt Ave</h3>
         </div>
       </div>
       <div class="col-md-2 text-center">
@@ -355,40 +400,167 @@
   </div>
 </div>
 
+<div id="gallery">
+  <div id="carousel-gallery" class="carousel slide" data-interval="false">
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+      <div class="item active">
+        <img src="assets/img/gallery/image-1.jpg">
+      </div>
+
+      <div class="item">
+        <img src="assets/img/gallery/image-2.jpg">
+      </div>
+
+      <div class="item">
+        <img src="assets/img/gallery/image-3.jpg">
+      </div>
+
+      <div class="item">
+        <img src="assets/img/gallery/image-4.jpg">
+      </div>
+
+      <div class="item">
+        <img src="assets/img/gallery/image-5.jpg">
+      </div>
+
+      <div class="item">
+        <img src="assets/img/gallery/image-6.jpg">
+      </div>
+
+      <div class="item">
+        <img src="assets/img/gallery/image-7.jpg">
+      </div>
+
+      <div class="item">
+        <img src="assets/img/gallery/image-8.jpg">
+      </div>
+
+      <div class="item">
+        <img src="assets/img/gallery/image-9.jpg">
+      </div>
+
+      <div class="item">
+        <img src="assets/img/gallery/image-10.jpg">
+      </div>
+
+      <div class="item">
+        <img src="assets/img/gallery/image-11.jpg">
+      </div>
+
+      <div class="item">
+        <img src="assets/img/gallery/image-12.jpg">
+      </div>
+
+      <div class="item">
+        <img src="assets/img/gallery/image-13.jpg">
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <a class="left carousel-control" href="#carousel-gallery" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+    </a>
+    <a class="right carousel-control" href="#carousel-gallery" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right"></span>
+    </a>
+  </div>
+</div>
+
+<div id="press">
+  <div class="col-md-12 text-center"><h1>Press</h1></div>
+  
+
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-10 col-xs-offset-1 text-center" style="font-size: 20px;">
+        Here's what people have been saying about Lost Landmarks:
+      </div>
+    </div>
+    <div class="col-md-12 text-center">&nbsp;</div>
+    <div class="col-md-12 text-center">&nbsp;</div>
+    <div class="row">
+      <div class="col-sm-4 text-center" style="font-size: 20px;">
+        <a href="http://untappedcities.com/2014/04/25/lost-landmarks-project-give-pedestrians-on-location-view-onto-nyc-history/">
+          “Lost Landmarks Project Gives Pedestrians On-Location View onto NYC History”<br>
+          - Untapped Cities
+        </a>
+      </div>
+      <div class="col-sm-4 text-center" style="font-size: 20px;">
+        <a href="http://ny.curbed.com/archives/2014/04/25/lost_landmarks_project_visualizes_new_yorks_past_onsite.php">
+          “'Lost Landmarks' Project Visualizes New York's Past On-Site”<br>
+          - Curbed NY
+        </a>
+      </div>
+      <div class="col-sm-4 text-center" style="font-size: 20px;">
+        <a href="https://twitter.com/mlrossi80/status/460149070364172288">
+          “Amazing public art scholarship”<br>
+          - Matthew Louis Rossi @mlrossi80
+        </a>
+      </div>
+    </div>
+
+    <div class="col-md-12 text-center">&nbsp;</div>
+    <div class="col-md-12 text-center">&nbsp;</div>
+    <div class="col-md-12 text-center">&nbsp;</div>
+
+    <div class="row">
+      <div class="col-sm-4 text-center" style="font-size: 20px;">
+        <a href="https://twitter.com/WhatstheT_DB/status/459724931547140096">
+          “Leave it to @mattfelsen to create a #timemachine in #NYC.”<br>
+          - Dana Bassett @WhatstheT_DB
+        </a>
+      </div>
+      <div class="col-sm-4 text-center" style="font-size: 20px;">
+        <a href="https://twitter.com/mmelissafbaby/status/460193186984771584">
+          “Awesome & new art experience. Definitely looking forward to the next placement!”<br>
+          - mmelissaFbaby ☮ @mmelissafbaby
+        </a>
+      </div>
+      <div class="col-sm-4 text-center" style="font-size: 20px;">
+        <a href="https://twitter.com/SaraBrandin/status/460231543639007232">
+            “Loved looking through the @LostLandmarks lens today to see a glimpse of past NYC.”<br>
+          - Sara Brandin @SaraBrandin
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="contact">
   <div class="vert">
     <div class="col-md-12 text-center"><h1>Contact</h1></div>
     <div class="col-md-12 text-center">&nbsp;</div>
 
     <div class="container">
-    <div class="row">
-      <div class="col-xs-10 col-xs-offset-1" style="font-size: 20px;">
-        Hi. I'm <a href="http://mattfelsen.com" target="_blank">Matt Felsen</a> and I'm a graduate student in the Parsons MFA Design+Technology program. Lost Landmarks is my thesis project and comes out of my love for this city and its rich architectural heritage. Please join me in bringing the city's past to life.
+      <div class="row">
+        <div class="col-xs-10 col-xs-offset-1" style="font-size: 20px;">
+          Hi. I'm <a href="http://mattfelsen.com" target="_blank">Matt Felsen</a> and I'm a graduate student in the Parsons MFA Design+Technology program. Lost Landmarks is my thesis project and comes out of my love for this city and its rich architectural heritage. Please join me in bringing the city's past to life.
+        </div>
       </div>
-    </div>
-    <div class="col-md-12 text-center">&nbsp;</div>
-    <div class="col-md-12 text-center">&nbsp;</div>
-    <div class="row">
-      <div class="col-md-12 text-center" style="font-size: 20px;">
-        <p>
-          <a href="https://twitter.com/intent/user?screen_name=LostLandmarks">
+      <div class="col-md-12 text-center">&nbsp;</div>
+      <div class="col-md-12 text-center">&nbsp;</div>
+      <div class="row">
+        <div class="col-md-12 text-center" style="font-size: 20px;">
+          <p>
             <i class="icon-twitter icon-2x"></i>
-            <span class="bumpup">Follow @LostLandmarks</span>
-          </a>
-        </p>
-        <p>
-          &nbsp;
-        </p>
-        <p>
-          <a href="mailto:info@lostlandmarks.cc">
-            <i class="icon-envelope icon-2x" href="mailto:info@lostlandmarks.cc"></i>
-            <span class="bumpup">&nbsp; Get in touch!</span>
-          </a>
-        </p>
+            <a href="https://twitter.com/intent/user?screen_name=LostLandmarks">
+              <span class="bumpup">Follow @LostLandmarks</span>
+            </a>
+          </p>
+          <p>
+            &nbsp;
+          </p>
+          <p>
+            <i class="icon-envelope icon-2x" href="mailto:info@lostlandmarks.cc"></i>&nbsp; 
+            <a href="mailto:info@lostlandmarks.cc">
+              <span class="bumpup">Get in touch!</span>
+            </a>
+          </p>
+        </div>
       </div>
     </div>
-  </div>
-
   </div>
 </div>
 
@@ -416,13 +588,31 @@ $(document).ready(function() {
     /* highlight the top nav as scrolling occurs */
     $("body").scrollspy({ target: "#navbar" });
 
+    var lastScrollTarget;
     $('#navbar').on('activate.bs.scrollspy', function () {
       var target = $("li[class='active']").children("a").attr("href");
+
+      if (target == lastScrollTarget) return;
 
       if (target == "#schedule") {
         $("#navbar li a").css("color", "white");
       } else {
         $("#navbar li a").css("color", "black");
+      }
+
+      if (target == "#gallery") {
+        $("#navbar").css("background-color", "rgba(255, 255, 255, 0.4)");
+        $(document).bind('keydown', function(evt) {
+          if (evt.keyCode == 37) {
+            $('#carousel-gallery').carousel('prev');
+          }
+          if (evt.keyCode == 39) {
+            $('#carousel-gallery').carousel('next');
+          }
+        });
+      } else {
+        $("#navbar").css("background-color", "rgba(255, 255, 255, 0)");
+        $(document).unbind('keydown');
       }
   })
 
