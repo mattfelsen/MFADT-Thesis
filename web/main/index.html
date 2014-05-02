@@ -285,6 +285,11 @@
       text-shadow: 0 1px 2px black;
     }
 
+    /* don't show preload images */
+    img.preload {
+      display: none;
+    }
+
 
 
   </style>
@@ -319,7 +324,17 @@
 <div class="header vert" id="home">
   <div class="container">
 
+    <img class="preload" src="assets/img/background.jpg">
+
     <img id="viewer" src="assets/img/viewer-pan/viewer-pan-1.png">
+    <img class="preload" src="assets/img/viewer-pan/viewer-pan-2.png">
+    <img class="preload" src="assets/img/viewer-pan/viewer-pan-3.png">
+    <img class="preload" src="assets/img/viewer-pan/viewer-pan-4.png">
+    <img class="preload" src="assets/img/viewer-pan/viewer-pan-5.png">
+    <img class="preload" src="assets/img/viewer-pan/viewer-pan-6.png">
+    <img class="preload" src="assets/img/viewer-pan/viewer-pan-7.png">
+    <img class="preload" src="assets/img/viewer-pan/viewer-pan-8.png">
+    <img class="preload" src="assets/img/viewer-pan/viewer-pan-9.png">
 
     <h1>Lost Landmarks</h1>
     <p class="lead">
@@ -371,7 +386,7 @@
     <hr>
     <div class="row">
       <div class="col-md-7 col-md-offset-5" style="font-size: 20px;">
-        Follow <a href="https://twitter.com/intent/user?screen_name=LostLandmarks" style="color: white;">@LostLandmarks</a> for updates on where to find Lost Landmarks! You'll be able to find the viewer on Saturdays Spring 2014 at sites throughout Manhattan.
+        Follow <a href="https://twitter.com/intent/user?screen_name=LostLandmarks" style="color: white;">@LostLandmarks</a> for updates on where to find the viewer! Events will take place on Saturdays in Spring 2014 at sites throughout Manhattan.
       </div>
     </div>
     <div class="row" style="padding-top: 10px;">
@@ -634,8 +649,8 @@ $(document).ready(function() {
       var src = "assets/img/viewer-pan/viewer-pan-"+i+".png";
       viewerPanImages.push(src);
 
-      var preloadImage = document.createElement('img')
-      preloadImage.src = src;
+      //var preloadImage = document.createElement('img')
+      //preloadImage.src = src;
     }
 
     $('.header').mousemove(function(e) {
