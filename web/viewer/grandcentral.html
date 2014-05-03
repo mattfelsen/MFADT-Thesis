@@ -176,7 +176,7 @@ $("#info").click(animateOverlayOut);
 $("#info").css('top', window.innerHeight)
     
 // load socket.io
-var socket = io.connect('mattfelsen.local', { port: 9001, reconnect: false });
+var socket = io.connect('lostlandmarks.cc', { port: 9001, reconnect: false });
 var connectionTimer = setInterval(socketReconnect, 5000);
 
 // set up socket.io event handlers
@@ -195,12 +195,18 @@ socket.on('message', function (data) {
   if (data.event == "reload") {
     location.reload();
   }
-  if (data.event == "info-overlay") {
-    if (value) {
-      animateOverlayIn();
-    } else {
+  if (data.event == "beginning") {
+    if (overlayPresent) {
       animateOverlayOut();
     }
+    imageQueueIndex = imageQueue.length - 1;
+    transition();
+  }
+  if (data.event == "info-overlay-in") {
+    animateOverlayIn();
+  }
+  if (data.event == "info-overlay-out") {
+    animateOverlayOut();
   }
   if (data.event == "heading-offset") {
     console.log("heading", data.value)
