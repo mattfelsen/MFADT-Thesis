@@ -10,7 +10,7 @@ function setup (){
 	$('body').css('background-color', disconnectColor);
 
 	// load socket.io
-	var socket = io.connect('lostlandmarks.cc', { port: 9001, reconnect: false });
+	var socket = io.connect(window.location.hostname, { port: 9001, reconnect: false });
 	var connectionTimer = setInterval(socketReconnect, 5000);
 
 	// set up socket.io event handlers

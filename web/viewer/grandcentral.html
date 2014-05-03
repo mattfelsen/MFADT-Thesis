@@ -62,20 +62,36 @@ var overlayPresent = false;
 
 var imageQueue = [
     {
-        image: "exterior-angled.jpg",
-        caption: "The 9th Regiment Armory once stood at 125 W 14th St. Designed by architects Edward Sargent & W. E. Cable, it was constructed in 1894."
+        image: "depot-1.jpg",
+        caption: "Grand Central Depot opened in 1871 and was the first to unite three separate companies in one station: New York Central & Hudson River Railroad, New York & Harlem Railroad, and the New York & New Haven Railroad."
+    },
+    // {
+    //     image: "depot-2.jpg",
+    //     caption: ""
+    // },
+    {
+        image: "depot-interior.jpg",
+        caption: "Inside the waiting hall, destinations are inscribed near the ceiling atop arched glass windows."
     },
     {
-        image: "drill-shed.jpg",
-        caption: "There was a drill hall with 64 foot ceilings, similar to the pictured hall from the extant 69th Regiment Armory at Lexington & 25th St."
+        image: "depot-shed.jpg",
+        caption: "The train shed was the first to feature elevated platforms, allowing passengers to enter trains without stairs, and featured an arched glass ceiling 112 feet tall without any columns or pillars."
     },
     {
-        image: "cadet-drill.jpg",
-        caption: "In addition to military training, the hall hosted the New York Poultry Show & Farm Exposition as well as a number of sporting events."
+        image: "station-1.jpg",
+        caption: "From 1899 to 1900, the depot was renovated, expanding from three stories to six, replacing the facade, and removing the Second Empire-style Mansard roofs."
     },
     {
-        image: "exterior-straight.jpg",
-        caption: "Though the exterior featured massive, rough-cut granite walls 40 inches thick, it could not stand up to demolition in the 1960s."
+        image: "station-2.jpg",
+        caption: ""
+    },
+    {
+        image: "terminal-1.jpg",
+        caption: "Beginning in 1903 and lasting for a decade, the current Grand Central Terminal was constructed as the old building was torn down in phases."
+    },
+    {
+        image: "terminal-2.jpg",
+        caption: "The iconic arches of Grand Central Terminal take shape, appearing as a mere skeleton of iron framing."
     }
 ];
 var imageQueueIndex = 0;
@@ -94,7 +110,7 @@ if (!showImage) {
 
 
 function loadViewerImage(obj) {
-  img.attr("src", "img/armory/"+obj.image);
+  img.attr("src", "img/grandcentral/"+obj.image);
   
   img.css("width", (window.innerWidth * imgScale)+"px");
   img.css("height", (window.innerHeight * imgScale)+"px");
@@ -141,7 +157,9 @@ function transition(value) {
           // console.log("index not equal to last element")
           imageQueueIndex++;
           loadViewerImage(imageQueue[imageQueueIndex]);
-          animateOverlayIn();
+          if (imageQueue[imageQueueIndex].caption) {
+            animateOverlayIn();
+          }
         } else {
           // console.log("index IS equal to last element")
           showImage = false;
@@ -176,7 +194,7 @@ $("#info").click(animateOverlayOut);
 $("#info").css('top', window.innerHeight)
     
 // load socket.io
-var socket = io.connect('lostlandmarks.cc', { port: 9001, reconnect: false });
+var socket = io.connect(window.location.hostname, { port: 9001, reconnect: false });
 var connectionTimer = setInterval(socketReconnect, 5000);
 
 // set up socket.io event handlers
