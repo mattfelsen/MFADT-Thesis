@@ -1,5 +1,5 @@
 var io = require('socket.io-client');
-var socket = io.connect('localhost', { port: 5555 });
+var socket = io.connect('localhost', { port: 9001 });
 
 
 socket.on('connect', function (data) {
