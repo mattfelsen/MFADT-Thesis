@@ -29,7 +29,7 @@ socket.on('disconnect', function () {
 	// connectionTimer = setInterval(socketReconnect, 5000);
 });
 
-var socketReconnect = function() {
+function socketReconnect() {
 	console.log('[SOCK]', 'Checking connection...');
 	if (socket.socket.connected == false) {
 		console.log('[SOCK]', 'Not connected, attemping connection...');
@@ -45,7 +45,7 @@ var readPin = function() {
 	// (the circuit uses a pull-down resistor so true == open && false == closed)
 	if (state != lastState && state == false) {
 		console.log('[GPIO]', 'Lever pressed! Sending event.');
-		socket.emit('message', { event: 'lever' });
+		socket.emit('message', { event: 'transition' });
 		led.writeSync(state);
 	}
 
