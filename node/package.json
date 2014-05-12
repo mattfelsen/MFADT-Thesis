@@ -1,12 +1,27 @@
 {
-  "name": "mfadt-thesis",
-  "description": "MFA Design+Technology Thesis",
+  "name": "lost-landmarks",
   "version": "0.0.1",
-  "private": true,
+  "description": "Lost Landmarks",
+  "main": "index.js",
   "dependencies": {
-    "express": "3.x",
-    "onoff":"0.3.0",
-    "osc-min":"0.0.15",
-    "spacebrew":"0.0.2"
-  }
+    "onoff": "^0.3.2",
+    "socket.io": "^0.9.16",
+    "socket.io-client": "^0.9.16",
+    "spacebrew": "0.0.2",
+    "express": "^3.4.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mattfelsen/MFADT-Thesis"
+  },
+  "author": "Matt Felsen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mattfelsen/MFADT-Thesis/issues"
+  },
+  "homepage": "https://github.com/mattfelsen/MFADT-Thesis"
 }
