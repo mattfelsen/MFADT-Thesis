@@ -1,4 +1,4 @@
-var io = require('socket.io').listen(5555);
+var io = require('socket.io').listen(9001);
 
 // set log level to 2 (info) from default of 3 (debug)
 io.set('log level', 2);

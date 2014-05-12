@@ -1,5 +1,5 @@
 var io = require('socket.io-client');
-var socket = io.connect('localhost', { port: 5555, reconnect: false });
+var socket = io.connect('localhost', { port: 9001, reconnect: false });
 
 var leverTimer;
 var connectionTimer = setInterval(socketReconnect, 5000);
