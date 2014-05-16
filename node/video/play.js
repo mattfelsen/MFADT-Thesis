@@ -19,10 +19,7 @@ var nextVideo = function() {
 	      console.log('exec error: ' + error);
 	    }
 	    
-	    index++;
-	    if (index > queue.length - 1) {
-		    index = 0;
-	    }
+	    index = ++index % queue.length;
 
 	    nextVideo();
 	});
