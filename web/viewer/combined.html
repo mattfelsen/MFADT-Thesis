@@ -240,7 +240,7 @@ socket.on('message', function (data) {
   // console.log('[SOCK]', data);
 
   clearTimeout(resetTimer);
-  resetTimer = setTimeout(resetToBeginning, 10 * 1000);
+  resetTimer = setTimeout(resetToBeginning, 90 * 1000);
 
   if (data.event == "transition") {
     transition();

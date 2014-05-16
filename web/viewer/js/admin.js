@@ -29,6 +29,7 @@ function setup (){
 	// listen to the mouse 
 	$("button").on("mousedown", onButtonPress);
 	$("input[type='range']").on("change", onRangePress);
+	$("input[type='text']").keyup(onContentChange);
 
 	function socketReconnect() {
 		// console.log('[SOCK]', 'Checking connection...');
@@ -39,11 +40,22 @@ function setup (){
 	}
 
 	function onButtonPress (){
-	    socket.emit('message', { event: $(this).attr("id") })
+		if (!$(this).hasClass('change-content')) {
+			socket.emit('message', { event: $(this).attr("id") });
+		} else {
+			socket.emit('message', { event: 'change-content', value: $(this).attr("data-content") });
+		}
 	}
 
 	function onRangePress() {
-		socket.emit('message', { event: $(this).attr("id"), value: $(this).val() })
+		socket.emit('message', { event: $(this).attr("id"), value: $(this).val() });
+	}
+
+	function onContentChange(e) {
+		if (e.keyCode != 13) return;
+
+		socket.emit('message', { event: $(this).attr("id"), value: $(this).val() });
+		$(this).val('');
 	}
 
 }
