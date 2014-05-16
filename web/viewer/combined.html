@@ -91,27 +91,27 @@ var imageQueue = {
     //     caption: ""
     // },
     {
-      image: "img/grandcentraldepot-interior.jpg",
+      image: "img/grandcentral/depot-interior.jpg",
       caption: "Inside the waiting hall, destinations are inscribed near the ceiling atop arched glass windows."
     },
     {
-      image: "img/grandcentraldepot-shed.jpg",
+      image: "img/grandcentral/depot-shed.jpg",
       caption: "The train shed was the first to feature elevated platforms, allowing passengers to enter trains without stairs, and featured an arched glass ceiling 112 feet tall without any columns or pillars."
     },
     {
-      image: "img/grandcentralstation-1.jpg",
+      image: "img/grandcentral/station-1.jpg",
       caption: "From 1899 to 1900, the depot was renovated, expanding from three stories to six, replacing the facade, and removing the Second Empire-style Mansard roofs."
     },
     {
-      image: "img/grandcentralstation-2.jpg",
+      image: "img/grandcentral/station-2.jpg",
       caption: ""
     },
     {
-      image: "img/grandcentralterminal-1.jpg",
+      image: "img/grandcentral/terminal-1.jpg",
       caption: "Beginning in 1903 and lasting for a decade, the current Grand Central Terminal was constructed as the old building was torn down in phases."
     },
     {
-      image: "img/grandcentralterminal-2.jpg",
+      image: "img/grandcentral/terminal-2.jpg",
       caption: "The iconic arches of Grand Central Terminal take shape, appearing as a mere skeleton of iron framing."
     }
   ]
@@ -218,7 +218,10 @@ function resetToBeginning() {
       animateOverlayOut();
     }
     imageQueueIndex = imageQueue[contentIndex].length - 1;
-    transition();
+    if (showImage) {
+      transition();  
+    }
+    
 }
 
 $(window).click(animateOverlayIn);

@@ -1,5 +1,5 @@
 var io = require('socket.io-client');
-var socket = io.connect('localhost', { port: 9001, reconnect: false });
+var socket = io.connect('lostlandmarks.cc', { port: 9001, reconnect: false });
 
 var connectionTimer = setInterval(socketReconnect, 5000);
 
