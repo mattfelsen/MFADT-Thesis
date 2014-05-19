@@ -1,0 +1,17 @@
+case "$1" in
+  start)
+    cd /home/pi/projects/thesis/node/video
+    forever start play.js
+    echo "Starting lostlandmarks: forever start play.js"
+   ;;
+  stop)
+    forever stop play.js
+    echo "Stopped lostlandmarks: forever stop play.js"
+    ;;
+  *)
+    echo "Usage: sudo service ll-projector {start|stop}"
+    exit 1
+    ;;
+
+esac
+exit 0
