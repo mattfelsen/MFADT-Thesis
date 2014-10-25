@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Lost Landmarks</title>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+  <link href='http://fonts.googleapis.com/css?family=Sorts+Mill+Goudy:400,400italic' rel='stylesheet' type='text/css'>
+
+  <!-- Just for debugging purposes. Don't actually copy this line! -->
+  <!--[if lt IE 9]><script src="assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- CSS code from Bootply.com editor -->
+
+  <style type="text/css">
+    /* -- custom css for Bootstrap 3.x --*/
+
+    /* move special fonts to HTML head for better performance */
+    @import url('http://fonts.googleapis.com/css?family=Open+Sans:200,300,400,600');
+
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+/*      font-family:'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;*/
+      font-family: 'Sorts Mill Goudy';
+    }
+
+    /* fix bs3 horizontal scrollbar bug */
+    .row { margin: 0; padding: 0 }
+
+    h1 {
+      font-size:45px;
+    }
+
+    img.grayscale {
+        filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 10+, Firefox on Android */
+        filter: gray; /* IE6-9 */
+        -webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
+    }
+
+    .icon-bar {
+       background-color:#fff;
+    }
+
+    .scroll-down a, .scroll-top a {
+       color:#ffffff;
+    }
+
+    .scroll-down {
+       position:fixed;
+       bottom:20%;
+       right:0%;
+       color:#f9f9f9;
+    }
+
+    .scroll-top {
+      background-color:#33ee67;
+    }
+
+    .header .btn {
+      font-size:1.6em;
+      border-color:#68422a;
+/*      padding:15px;*/
+/*       background-color:transparent;*/
+      background-color: rgba(241, 241, 241, 0.75);
+/*      color:#ffffff;*/
+/*      color:#777777;*/
+      color: black;
+
+    }
+
+    .header .btn:hover {
+      background-color:#eeeeee;
+/*      color:#777777;*/
+/*      color: black;*/
+    }
+
+    a {
+      /*color:#fff;*/
+      color: black;
+    }
+
+    .navbar {
+      padding-top: 50px;
+      padding-right: 200px;
+    }
+
+    .navbar li a:hover, .navbar-bold li.active {
+      /*background-color:#22dd56;*/
+      background-color: transparent;
+      font-weight: bold;
+    }
+
+    .vert {
+      vertical-align: middle;
+      width:100%;
+      padding-top:4%;
+    }
+
+    .header h1 {
+      /*-webkit-text-stroke: 1px rgba(0,0,0,0.1);*/
+      /*color:#431a6d;
+      color:#fff;*/
+      color: black;
+      margin-left:-5px;
+      margin-bottom:5px;
+      /*font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;*/
+      /*font-size:110px;*/
+      font-family: 'Sorts Mill Goudy';
+      font-style: italic;
+      font-weight: bold;
+      font-size: 6em;
+      letter-spacing: -1px;
+    }
+
+    .header .lead {
+      /*color:#eeeeee;*/
+      color: black;
+      /*font-size:25px;*/
+      font-family: 'Sorts Mill Goudy';
+      font-size: 2em;
+      letter-spacing: -1px;
+    }
+
+    .header {
+      height: 100%;
+      /*background: #11cc45 url('http://www.bootply.com/assets/example/pt_squares_lg.png') repeat center center fixed;*/
+      /*background: url('assets/img/background.jpg') no-repeat -200px -100px fixed;*/
+      background: url('assets/img/background.jpg') no-repeat center 0 fixed;
+      -webkit-filter: sepia(30%);
+
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+
+      box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+
+      padding-top: 250px;
+      text-align: center;
+    }
+
+    .header .follow {
+      font-size: 20px;
+    }
+
+    .bumpup {
+      position: relative;
+      bottom: 5px;
+    }
+
+    .blurb {
+      padding: 120px 0;
+      background-color:#fefefe;
+    }
+
+    .blurb .panel {
+      background-color:transparent;
+    }
+
+    .bright {
+      /*background: #7fbbda url('http://www.bootply.com/assets/example/bg_suburb.jpg') no-repeat center center fixed; */
+      background: url('assets/img/background.jpg') no-repeat center 0 fixed;
+      color:#fff;
+    }
+
+    .featurette {
+      /*background: #545455;*/
+      background: #eee;
+      padding: 50px 0;
+      /*color: #ffffff;*/
+      color: black;
+    }
+
+    .featurette-item {
+      margin-bottom: 15px;
+    }
+
+    .featurette-item > i {
+      /*border: 3px solid #ffffff;*/
+      border: 3px solid #black;
+      border-radius: 50%;
+      display: inline-block;
+      font-size: 56px;
+      width: 140px;
+      height: 140px;
+      line-height: 136px;
+      vertical-align: middle;
+      text-align: center;
+    }
+
+    .featurette-item > i:hover {
+      font-size: 68px;
+    }
+
+    .callout {
+      /*color: #ffffff;*/
+      color: black;
+      padding-top:7%;
+      height: 100%;
+      width: 100%;
+      /*background: url('http://www.bootply.com/assets/example/bg_suburb.jpg') no-repeat center center fixed; */
+      background: url('assets/img/background.jpg') no-repeat center -100px fixed;
+      /*-webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;*/
+
+      box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+    }
+
+    .gallery {
+      padding: 50px 0;
+    }
+
+    .call-to-action {
+      background: #eeeeee;
+      padding: 50px 0;
+    }
+
+    .call-to-action .btn {
+      margin: 10px;
+    }
+
+    footer {
+      padding: 100px 0;
+    }
+
+    #schedule {
+      min-height: 100%;
+    }
+
+    /* -- end custom css for Bootstrap 3.x --*/
+
+  </style>
+</head>
+
+<!-- HTML code from Bootply.com editor -->
+
+<body>
+
+<!-- <nav class="navbar navbar-fixed-top navbar-bold navbar-right pull-right" data-spy="affix" data-offset-top="1000">
+  <div class="container">
+    <div class="navbar-header">
+      <a href="#" class="navbar-brand">Lost Landmarks</a>
+      <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav pull-right">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#schedule">Schedule</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav> -->
+
+<div class="header vert" id="home">
+  <div class="container">
+
+    <h1>Lost Landmarks</h1>
+      <p class="lead">Explore New York's forgotten past.</p>
+      <div>&nbsp;</div>
+      <p>
+        <a href="https://twitter.com/LostLandmarks" data-show-count="false" class="btn btn-default">
+          <i class="icon-twitter icon-2x"></i> <span class="bumpup">Follow @LostLandmarks</span>
+        </a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+      </p>
+      <p class="follow">
+        Stay in touch to receive the latest updates.
+      </p>
+
+  </div>
+</div>
+
+
+
+<script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<!-- JavaScript jQuery code from Bootply.com editor -->
+
+<script type='text/javascript'>
+
+$(document).ready(function() {
+
+    /* highlight the top nav as scrolling occurs */
+    $('body').scrollspy({ target: '#navbar' })
+
+    $('.navbar a').click(function(e) {
+      $('body,html').animate({ scrollTop: $($(this).attr('href')).offset().top }, 400);
+      return false;
+    })
+
+});
+
+</script>
+
+</body>
+</html>
